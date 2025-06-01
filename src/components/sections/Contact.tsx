@@ -77,21 +77,19 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        if (!formRef.current) {
-          throw new Error('Form reference is not available');
-        }
+        console.log('Sending form with data:', formData);
 
-        console.log('Sending form with data:', {
-          from_name: formData.from_name,
-          from_email: formData.from_email,
-          subject: formData.subject,
-          message: formData.message
-        });
-
-        const result = await emailjs.sendForm(
+        const result = await emailjs.send(
           'service_7omcoji',
           'template_a7qwtkg',
-          formRef.current,
+          {
+            from_name: formData.from_name,
+            from_email: formData.from_email,
+            subject: formData.subject,
+            message: formData.message,
+            to_name: 'Abad Naseer',
+            reply_to: formData.from_email,
+          },
           'rfvOvo36rN7dcTIzj'
         );
 

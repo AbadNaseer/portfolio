@@ -67,7 +67,7 @@ const Navbar: React.FC = () => {
             </Link>
           ))}
           <a 
-            href="/resume-abad.pdf" 
+            href="/resume.pdf" 
             className="btn-primary flex items-center gap-2"
             download="Abad-Naseer-Resume.pdf"
             onClick={(e) => {
@@ -132,7 +132,7 @@ const Navbar: React.FC = () => {
               ))}
               <div className="pt-6 border-t border-slate-800">
                 <a 
-                  href="/resume-abad.pdf" 
+                  href="/resume.pdf" 
                   className="btn-primary inline-flex items-center gap-2"
                   download="Abad-Naseer-Resume.pdf"
                   onClick={closeMenu}

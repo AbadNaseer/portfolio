@@ -58,7 +58,7 @@ const Hero: React.FC = () => {
                 Get in Touch
               </Link>
               <a 
-                href="/resume-abad.pdf"
+                href="/resume.pdf"
                 className="flex items-center gap-2 px-7 py-3 font-medium text-white bg-slate-700 rounded-full outline-none focus:scale-110 hover:scale-110 hover:bg-slate-800 active:scale-105 transition"
                 download="Abad-Naseer-Resume.pdf"
               >

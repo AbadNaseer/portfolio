@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-white focus:outline-none"
+          className="md:hidden text-white focus:outline-none z-[101]"
           onClick={toggleMenu}
           aria-label={isOpen ? 'Close menu' : 'Open menu'}
         >
@@ -110,13 +110,6 @@ const Navbar: React.FC = () => {
                 <Server className="text-primary-500" size={24} />
                 <span className="font-bold text-xl">Abad<span className="gradient-text">Naseer</span></span>
               </Link>
-              <button 
-                className="text-white focus:outline-none"
-                onClick={closeMenu}
-                aria-label="Close menu"
-              >
-                <X size={24} />
-              </button>
             </div>
           </div>
 

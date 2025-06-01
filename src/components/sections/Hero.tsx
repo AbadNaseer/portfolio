@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-scroll';
-import { Download, MessageSquare, ChevronDown } from 'lucide-react';
+import { Download, MessageSquare } from 'lucide-react';
 import TerminalEffect from '../ui/TerminalEffect';
 
 const Hero: React.FC = () => {
@@ -83,25 +83,6 @@ const Hero: React.FC = () => {
             </div>
           </motion.div>
         </div>
-        
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.8 }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-        >
-          <span className="text-slate-400 text-sm mb-2">Scroll Down</span>
-          <Link
-            to="about"
-            spy={true}
-            smooth={true}
-            offset={-100}
-            duration={500}
-            className="animate-bounce cursor-pointer"
-          >
-            <ChevronDown className="text-primary-400" size={24} />
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

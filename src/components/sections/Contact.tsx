@@ -85,12 +85,15 @@ const Contact: React.FC = () => {
 
         // Send the email with the new service ID
         const result = await emailjs.send(
-          'service_4lme1li', // New Gmail service ID
+          'service_4lme1li',
           'template_a7qwtkg',
           {
             from_name: formData.from_name,
+            from_email: formData.from_email,
+            subject: formData.subject || `New message from ${formData.from_name}`,
             message: formData.message,
             reply_to: formData.from_email,
+            to_name: 'Abad Naseer'  // Adding recipient name
           },
           'rfvOvo36rN7dcTIzj'
         );

@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-dark-500 text-slate-200;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans font-bold text-white;
+  }
+  
+  ::selection {
+    @apply bg-primary-500/30 text-white;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+  }
+  
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent;
+  }
+  
+  .gradient-border {
+    @apply border border-transparent bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-border;
+  }
+  
+  .btn-primary {
+    @apply px-6 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 
+           text-white font-medium transition-all duration-300 
+           hover:from-primary-500 hover:to-primary-600 hover:shadow-lg 
+           hover:shadow-primary-600/20 focus:ring-2 focus:ring-primary-500/50;
+  }
+  
+  .btn-secondary {
+    @apply px-6 py-3 rounded-lg bg-dark-100 text-white font-medium border 
+           border-slate-700 transition-all duration-300 hover:bg-dark-200 
+           hover:border-primary-500 focus:ring-2 focus:ring-primary-500/50;
+  }
+  
+  .card {
+    @apply bg-dark-300 rounded-xl border border-slate-800 p-6 transition-all duration-300 
+           hover:border-slate-700 hover:shadow-lg hover:shadow-black/20;
+  }
+  
+  .nav-link {
+    @apply text-slate-300 hover:text-white transition-colors duration-300 
+           relative after:absolute after:bottom-0 after:left-0 after:h-0.5 
+           after:w-0 after:bg-gradient-to-r after:from-primary-500 after:to-secondary-500 
+           after:transition-all after:duration-300 hover:after:w-full;
+  }
+  
+  .nav-link.active {
+    @apply text-white after:w-full;
+  }
+  
+  .terminal {
+    @apply font-mono bg-dark-400 border border-slate-700 rounded-lg p-4 text-slate-300;
+  }
+  
+  .terminal-line::before {
+    content: '$ ';
+    @apply text-secondary-500;
+  }
+}
+
+/* Animations */
+.fadeIn {
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-400;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-dark-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-600;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
@@ -6,6 +6,7 @@ import SectionTitle from '../ui/SectionTitle';
 import { Phone, Mail, MapPin, Github, Linkedin, Send } from 'lucide-react';
 
 const Contact: React.FC = () => {
+  const formRef = useRef<HTMLFormElement>(null);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -76,18 +77,12 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        const templateParams = {
-          from_name: formData.name,
-          from_email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          to_name: 'Abad Naseer',
-        };
+        if (!formRef.current) return;
 
-        const result = await emailjs.send(
+        const result = await emailjs.sendForm(
           'service_7omcoji',
           'template_a7qwtkg',
-          templateParams,
+          formRef.current,
           'rfvOvo36rN7dcTIzj'
         );
 
@@ -230,16 +225,16 @@ const Contact: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+                    <label htmlFor="from_name" className="block text-sm font-medium text-slate-300 mb-2">
                       Name <span className="text-error-500">*</span>
                     </label>
                     <input
-                      id="name"
+                      id="from_name"
                       type="text"
-                      name="name"
+                      name="from_name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Your Name"
@@ -251,13 +246,13 @@ const Contact: React.FC = () => {
                     {formErrors.name && <p className="text-error-500 text-sm mt-1">{formErrors.name}</p>}
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                    <label htmlFor="from_email" className="block text-sm font-medium text-slate-300 mb-2">
                       Email <span className="text-error-500">*</span>
                     </label>
                     <input
-                      id="email"
+                      id="from_email"
                       type="email"
-                      name="email"
+                      name="from_email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Your Email"

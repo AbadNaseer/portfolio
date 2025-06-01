@@ -76,16 +76,18 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
+        const templateParams = {
+          from_name: formData.name,
+          from_email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          to_name: 'Abad Naseer',
+        };
+
         const result = await emailjs.send(
           'service_7omcoji',
           'template_a7qwtkg',
-          {
-            from_name: formData.name,
-            from_email: formData.email,
-            subject: formData.subject,
-            message: formData.message,
-            to_name: 'Abad Naseer',
-          },
+          templateParams,
           'rfvOvo36rN7dcTIzj'
         );
 
@@ -146,7 +148,7 @@ const Contact: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="section-padding">
+    <section id="contact" className="section-padding bg-dark-400">
       <div className="container-custom">
         <SectionTitle 
           title="Get In Touch"
@@ -159,12 +161,13 @@ const Contact: React.FC = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: 0.5 }}
+            className="bg-dark-300 p-8 rounded-lg shadow-lg"
           >
             <h3 className="text-xl font-bold mb-6 gradient-text">Contact Information</h3>
             
             <div className="space-y-6 mb-8">
               {contactInfo.map((info, index) => (
-                <div key={index} className="flex items-start gap-4">
+                <div key={index} className="flex items-start gap-4 hover:transform hover:translate-x-2 transition-transform duration-300">
                   <div className="w-10 h-10 bg-primary-900/30 rounded-full flex items-center justify-center text-primary-400">
                     {info.icon}
                   </div>
@@ -187,7 +190,7 @@ const Contact: React.FC = () => {
               ))}
             </div>
             
-            <div className="terminal">
+            <div className="terminal bg-dark-500 p-4 rounded-lg">
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-3 h-3 rounded-full bg-error-500"></div>
                 <div className="w-3 h-3 rounded-full bg-warning-500"></div>
@@ -208,11 +211,12 @@ const Contact: React.FC = () => {
             initial={{ opacity: 0, x: 20 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
             transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-dark-300 p-8 rounded-lg shadow-lg"
           >
             <h3 className="text-xl font-bold mb-6 gradient-text">Send a Message</h3>
             
             {formSubmitted ? (
-              <div className="card bg-dark-300 border-success-700">
+              <div className="bg-success-900/20 border border-success-500/20 rounded-lg p-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-success-700/20 flex items-center justify-center text-success-500">
                     <Send size={24} />
@@ -226,70 +230,94 @@ const Contact: React.FC = () => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-slate-300 mb-2">
+                      Name <span className="text-error-500">*</span>
+                    </label>
                     <input
+                      id="name"
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Your Name"
-                      className={`form-input ${formErrors.name ? 'border-error-500' : ''}`}
+                      className={`w-full px-4 py-3 rounded-lg bg-dark-500 border ${
+                        formErrors.name ? 'border-error-500' : 'border-slate-700'
+                      } text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300`}
                       disabled={isSubmitting}
                     />
                     {formErrors.name && <p className="text-error-500 text-sm mt-1">{formErrors.name}</p>}
                   </div>
                   <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                      Email <span className="text-error-500">*</span>
+                    </label>
                     <input
+                      id="email"
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Your Email"
-                      className={`form-input ${formErrors.email ? 'border-error-500' : ''}`}
+                      className={`w-full px-4 py-3 rounded-lg bg-dark-500 border ${
+                        formErrors.email ? 'border-error-500' : 'border-slate-700'
+                      } text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300`}
                       disabled={isSubmitting}
                     />
                     {formErrors.email && <p className="text-error-500 text-sm mt-1">{formErrors.email}</p>}
                   </div>
                 </div>
                 <div>
+                  <label htmlFor="subject" className="block text-sm font-medium text-slate-300 mb-2">
+                    Subject
+                  </label>
                   <input
+                    id="subject"
                     type="text"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Subject (Optional)"
-                    className="form-input"
+                    placeholder="What is this regarding?"
+                    className="w-full px-4 py-3 rounded-lg bg-dark-500 border border-slate-700 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300"
                     disabled={isSubmitting}
                   />
                 </div>
                 <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-slate-300 mb-2">
+                    Message <span className="text-error-500">*</span>
+                  </label>
                   <textarea
+                    id="message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Your Message"
+                    placeholder="Your message here..."
                     rows={5}
-                    className={`form-input ${formErrors.message ? 'border-error-500' : ''}`}
+                    className={`w-full px-4 py-3 rounded-lg bg-dark-500 border ${
+                      formErrors.message ? 'border-error-500' : 'border-slate-700'
+                    } text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300 resize-none`}
                     disabled={isSubmitting}
                   ></textarea>
                   {formErrors.message && <p className="text-error-500 text-sm mt-1">{formErrors.message}</p>}
                 </div>
                 <button
                   type="submit"
-                  className="btn-primary w-full flex items-center justify-center gap-2"
+                  className={`w-full px-6 py-3 rounded-lg bg-primary-500 text-white font-medium flex items-center justify-center gap-2 transition-all duration-300 ${
+                    isSubmitting ? 'opacity-75 cursor-not-allowed' : 'hover:bg-primary-600 active:bg-primary-700'
+                  }`}
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
                     <>
                       <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      Sending...
+                      <span>Sending...</span>
                     </>
                   ) : (
                     <>
                       <Send size={18} />
-                      Send Message
+                      <span>Send Message</span>
                     </>
                   )}
                 </button>

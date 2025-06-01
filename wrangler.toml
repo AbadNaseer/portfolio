@@ -8,7 +8,7 @@ cwd = "."
 watch_dir = "src"
 
 [site]
-bucket = ".next"
+bucket = "dist"
 entry-point = "."
 
 [env.production]

@@ -2,10 +2,12 @@ import { init } from '@emailjs/browser';
 
 // Initialize EmailJS with your public key
 export const initEmailJS = () => {
-  init({
-    publicKey: 'rfvOvo36rN7dcTIzj',
-    // Enable debug logs
-    debug: true,
-    origin: 'https://api.emailjs.com',
-  });
+  try {
+    init({
+      publicKey: 'rfvOvo36rN7dcTIzj',
+    });
+    console.log('EmailJS initialized successfully');
+  } catch (error) {
+    console.error('Failed to initialize EmailJS:', error);
+  }
 }; 

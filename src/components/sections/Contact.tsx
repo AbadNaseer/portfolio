@@ -14,15 +14,15 @@ const Contact: React.FC = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    from_name: '',
+    from_email: '',
     subject: '',
     message: '',
   });
 
   const [formErrors, setFormErrors] = useState({
-    name: '',
-    email: '',
+    from_name: '',
+    from_email: '',
     message: '',
   });
 
@@ -48,16 +48,16 @@ const Contact: React.FC = () => {
     let valid = true;
     const newErrors = { ...formErrors };
 
-    if (!formData.name.trim()) {
-      newErrors.name = 'Name is required';
+    if (!formData.from_name.trim()) {
+      newErrors.from_name = 'Name is required';
       valid = false;
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+    if (!formData.from_email.trim()) {
+      newErrors.from_email = 'Email is required';
       valid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
-      newErrors.email = 'Email is invalid';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.from_email)) {
+      newErrors.from_email = 'Email is invalid';
       valid = false;
     }
 
@@ -77,7 +77,16 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        if (!formRef.current) return;
+        if (!formRef.current) {
+          throw new Error('Form reference is not available');
+        }
+
+        console.log('Sending form with data:', {
+          from_name: formData.from_name,
+          from_email: formData.from_email,
+          subject: formData.subject,
+          message: formData.message
+        });
 
         const result = await emailjs.sendForm(
           'service_7omcoji',
@@ -91,8 +100,8 @@ const Contact: React.FC = () => {
         
         // Reset form
         setFormData({
-          name: '',
-          email: '',
+          from_name: '',
+          from_email: '',
           subject: '',
           message: '',
         });
@@ -103,7 +112,7 @@ const Contact: React.FC = () => {
         }, 5000);
       } catch (error) {
         console.error('Failed to send email:', error);
-        alert('Failed to send message. Please try again later.');
+        alert(`Failed to send message: ${error instanceof Error ? error.message : 'Unknown error'}`);
       } finally {
         setIsSubmitting(false);
       }
@@ -235,15 +244,15 @@ const Contact: React.FC = () => {
                       id="from_name"
                       type="text"
                       name="from_name"
-                      value={formData.name}
+                      value={formData.from_name}
                       onChange={handleChange}
                       placeholder="Your Name"
                       className={`w-full px-4 py-3 rounded-lg bg-dark-500 border ${
-                        formErrors.name ? 'border-error-500' : 'border-slate-700'
+                        formErrors.from_name ? 'border-error-500' : 'border-slate-700'
                       } text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300`}
                       disabled={isSubmitting}
                     />
-                    {formErrors.name && <p className="text-error-500 text-sm mt-1">{formErrors.name}</p>}
+                    {formErrors.from_name && <p className="text-error-500 text-sm mt-1">{formErrors.from_name}</p>}
                   </div>
                   <div>
                     <label htmlFor="from_email" className="block text-sm font-medium text-slate-300 mb-2">
@@ -253,15 +262,15 @@ const Contact: React.FC = () => {
                       id="from_email"
                       type="email"
                       name="from_email"
-                      value={formData.email}
+                      value={formData.from_email}
                       onChange={handleChange}
                       placeholder="Your Email"
                       className={`w-full px-4 py-3 rounded-lg bg-dark-500 border ${
-                        formErrors.email ? 'border-error-500' : 'border-slate-700'
+                        formErrors.from_email ? 'border-error-500' : 'border-slate-700'
                       } text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-primary-500/50 transition-all duration-300`}
                       disabled={isSubmitting}
                     />
-                    {formErrors.email && <p className="text-error-500 text-sm mt-1">{formErrors.email}</p>}
+                    {formErrors.from_email && <p className="text-error-500 text-sm mt-1">{formErrors.from_email}</p>}
                   </div>
                 </div>
                 <div>

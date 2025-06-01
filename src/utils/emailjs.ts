@@ -5,14 +5,17 @@ export const initEmailJS = () => {
   try {
     emailjs.init({
       publicKey: 'rfvOvo36rN7dcTIzj',
-      blockHeadless: false, // Important for Vercel deployment
-      limitRate: {
-        // Rate limiting to prevent abuse
-        throttle: 5000, // 5 seconds between emails
-      },
+      blockHeadless: false, // Allow running in Vercel environment
     });
+    
+    // Test the initialization
+    if (!emailjs.init) {
+      throw new Error('EmailJS initialization failed');
+    }
+    
     console.log('EmailJS initialized successfully');
   } catch (error) {
     console.error('Failed to initialize EmailJS:', error);
+    throw error;
   }
 }; 

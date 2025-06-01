@@ -77,17 +77,19 @@ const Contact: React.FC = () => {
       setIsSubmitting(true);
       
       try {
-        console.log('Sending form with data:', formData);
+        console.log('Attempting to send email with data:', {
+          name: formData.from_name,
+          email: formData.from_email,
+          message: formData.message
+        });
 
+        // Send the email with the new service ID
         const result = await emailjs.send(
-          'service_7omcoji',
+          'service_4lme1li', // New Gmail service ID
           'template_a7qwtkg',
           {
             from_name: formData.from_name,
-            from_email: formData.from_email,
-            subject: formData.subject,
             message: formData.message,
-            to_name: 'Abad Naseer',
             reply_to: formData.from_email,
           },
           'rfvOvo36rN7dcTIzj'
@@ -109,8 +111,9 @@ const Contact: React.FC = () => {
           setFormSubmitted(false);
         }, 5000);
       } catch (error) {
-        console.error('Failed to send email:', error);
-        alert(`Failed to send message: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        console.error('Failed to send email. Full error:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        alert(`Failed to send message. Please try again later. Error: ${errorMessage}`);
       } finally {
         setIsSubmitting(false);
       }

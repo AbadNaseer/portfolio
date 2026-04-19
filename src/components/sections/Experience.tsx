@@ -6,39 +6,28 @@ const Experience: React.FC = () => {
   const experiences = [
     {
       position: 'DevOps Engineer',
+      company: 'Mediatiz Foundation',
+      period: 'Oct 2025 - Present',
+      description: [
+        'Managed AWS infrastructure (ECS/Fargate, RDS, ALB, CloudFront, CloudWatch, SES, Route 53) for Mediatiz LMS and Khudi App serving 1M+ users with 20–30K concurrent requests at peak; sustained 99.9% uptime',
+        'Reduced AWS cloud costs by 30% through CloudWatch-driven auto-scaling, ECS task-definition tuning, and workload-aware right-sizing across staging and production clusters',
+        'Built GitHub Actions CI/CD pipelines for Android (APK/AAB), Laravel LMS, Django, and Next.js admin with zero-downtime ECS rollouts, Slack alerts, and Google Play Console automation',
+        'Architected and deployed PyBot — a Django + Ollama (Gemma 2B) local LLM tutor — eliminating external LLM API costs and addressing data-residency requirements for student PII',
+        'Built serverless Slack-to-Google Sheets automation on AWS Lambda, API Gateway, EventBridge, and S3 for daily cross-departmental reporting across 8 departments',
+        'Ran in-house OWASP security testing (brute-force, SQL injection, CSRF) on lms.mediatiz.org using Kali Linux, SQLMap, and SonarQube; validated WAF rules and produced remediation reports adopted by the development team'
+      ]
+    },
+    {
+      position: 'DevOps Engineer',
       company: 'Poshmaal Technologies',
-      period: 'Dec 2023 - Present',
+      period: 'Dec 2023 - Oct 2025',
       description: [
-        'Architected and deployed Kubernetes clusters with 99.9% uptime, managing 50+ microservices with auto-scaling',
-        'Implemented Redis caching and Kafka messaging, improving application performance by 40% and reducing latency',
-        'Built CI/CD pipelines with Jenkins and GitHub Actions, achieving zero-downtime deployments for production systems',
-        'Configured active-passive database clustering with PostgreSQL, ensuring high availability and disaster recovery',
-        'Established comprehensive monitoring with Prometheus and Grafana, reducing incident response time by 60%',
-        'Implemented security best practices including RBAC, SSL/TLS encryption, and container vulnerability scanning'
-      ]
-    },
-    {
-      position: 'Freelance DevOps Engineer',
-      company: 'Remote Consulting',
-      period: 'Feb 2023 - Dec 2023',
-      description: [
-        'Delivered end-to-end DevOps solutions for 15+ clients, specializing in AWS cloud migrations and containerization',
-        'Automated infrastructure provisioning using Terraform and Ansible, reducing deployment time by 70%',
-        'Implemented monitoring solutions with Prometheus, Grafana, and ELK stack for real-time performance tracking',
-        'Designed and implemented CI/CD pipelines for various application stacks including MERN, LAMP, and Java Spring',
-        'Provided cloud cost optimization services, helping clients reduce AWS spending by 25-40%'
-      ]
-    },
-    {
-      position: 'Cloud Infrastructure Intern',
-      company: 'Tech Innovators LLC',
-      period: 'Sep 2022 - Jan 2023',
-      description: [
-        'Assisted in managing AWS infrastructure including EC2, S3, and RDS instances',
-        'Configured and maintained CI/CD pipelines using Jenkins and GitLab CI',
-        'Implemented logging and monitoring solutions using ELK stack and Prometheus',
-        'Participated in containerization initiatives, helping migrate applications to Docker',
-        'Contributed to documentation of infrastructure setup and deployment procedures'
+        'Led full AWS-to-self-managed-VPS migration of firefly.online (IoT production platform) across EC2, ALB, RDS, ECS/ECR, VPC, S3, WAF, and Route 53 with measurable monthly cost reduction while maintaining client SLAs',
+        'Designed and implemented Blue-Green deployment strategy to run legacy Node.js and new Spring Boot environments in parallel; delivered a low-downtime production cutover via Nginx upstream switching',
+        'Architected Dev/Staging/Production environments from scratch on-premises; containerized and orchestrated 8+ microservices on Docker and Kubernetes with Nginx reverse proxy and resource quotas',
+        'Built Jenkins + GitHub Actions CI/CD pipelines reducing deployment cycle time by ~70% via parallel build stages, artifact caching, and automated rollback triggers',
+        'Implemented full-stack observability with Prometheus, Grafana, and Loki — custom service-level dashboards, real-time alerting, and centralized log aggregation',
+        'Hardened all environments with SSL/TLS (Let\'s Encrypt auto-renewal), SSH key restrictions, UFW/iptables firewalls, fail2ban, and Vault-based secrets management'
       ]
     }
   ];

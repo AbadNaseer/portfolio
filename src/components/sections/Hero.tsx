@@ -38,11 +38,11 @@ const Hero: React.FC = () => {
               Abad Naseer
             </h1>
             <h2 className="text-2xl md:text-3xl text-slate-300 font-medium mb-6">
-              DevOps Engineer & <span className="gradient-text">Cloud Solutions Architect</span>
+              DevOps & Cloud Engineer · <span className="gradient-text">AWS · DevSecOps · AI Systems</span>
             </h2>
             <p className="text-slate-400 text-lg mb-8 max-w-lg">
-              Specializing in cloud infrastructure, containerization, and MLOps pipelines. 
-              I build resilient systems that scale and perform.
+              I keep platforms online at scale, compress cloud spend, and ship AI products end-to-end —
+              from AWS-native LMS infrastructure serving 1M+ users to real-time trading systems.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">

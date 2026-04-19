@@ -12,29 +12,29 @@ const Skills: React.FC = () => {
   });
 
   const technicalSkills = [
-    { label: 'AWS Cloud Services', percentage: 90 },
-    { label: 'Docker & Kubernetes', percentage: 95 },
-    { label: 'CI/CD Pipelines', percentage: 90 },
-    { label: 'Infrastructure as Code', percentage: 85 },
-    { label: 'Monitoring & Logging', percentage: 85 },
-    { label: 'Database Management', percentage: 80 },
+    { label: 'AWS (ECS/Fargate, RDS, CloudFront, WAF, Lambda)', percentage: 92 },
+    { label: 'Docker & Kubernetes (EKS)', percentage: 90 },
+    { label: 'CI/CD (GitHub Actions, Jenkins)', percentage: 92 },
+    { label: 'Infrastructure as Code (Terraform, Ansible)', percentage: 85 },
+    { label: 'Observability (Prometheus, Grafana, Loki, EFK)', percentage: 88 },
+    { label: 'DevSecOps & OWASP Testing', percentage: 82 },
   ];
 
   const tools = [
-    { label: 'Jenkins', percentage: 90 },
-    { label: 'Terraform', percentage: 85 },
-    { label: 'Ansible', percentage: 80 },
-    { label: 'Prometheus/Grafana', percentage: 85 },
-    { label: 'ELK Stack', percentage: 80 },
-    { label: 'GitHub Actions', percentage: 90 },
+    { label: 'AI / MLOps (MLflow, Airflow, DVC, Ollama, RAG)', percentage: 85 },
+    { label: 'Kali Linux, SQLMap, SonarQube', percentage: 80 },
+    { label: 'Nginx, Blue-Green Deployments', percentage: 90 },
+    { label: 'eBPF, OpenTelemetry, Jaeger', percentage: 78 },
+    { label: 'Vault, SSL/TLS, fail2ban, UFW', percentage: 85 },
+    { label: 'Python, Bash, TypeScript, Go (learning)', percentage: 85 },
   ];
 
   const terminalCommands = [
+    'aws ecs update-service --force-new-deployment',
     'kubectl get pods --all-namespaces',
     'terraform apply -auto-approve',
-    'docker-compose up -d',
-    'aws ec2 describe-instances',
-    'helm install my-release ./chart'
+    'helm upgrade --install obs ./kube-prometheus-stack',
+    'sqlmap -u https://target --batch --risk=3'
   ];
 
   return (
@@ -94,35 +94,35 @@ const Skills: React.FC = () => {
                 <ul className="space-y-3 text-slate-300">
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Cloud Infrastructure Design & Implementation</span>
+                    <span>AWS Production Ops at 1M+ User Scale (99.9% Uptime)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Containerization & Microservices Architecture</span>
+                    <span>Cloud Cost Engineering (30% AWS Reduction)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Automated CI/CD Pipeline Configuration</span>
+                    <span>Low/Zero-Downtime Migrations & Blue-Green Deployments</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Infrastructure as Code (IaC) Implementation</span>
+                    <span>CI/CD Across Android, Laravel, Django, Next.js, Spring Boot</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Monitoring, Logging & Alerting Systems</span>
+                    <span>In-House Offensive Security (OWASP, Kali, SQLMap)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>High Availability & Disaster Recovery Planning</span>
+                    <span>Full-Stack Observability (Prometheus, Grafana, EFK, Jaeger, eBPF)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Database Clustering & Performance Optimization</span>
+                    <span>AI Products End-to-End (Ollama, MLflow, Airflow, RAG, FAISS)</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-primary-500 mr-2">•</span>
-                    <span>Security Implementation & Compliance</span>
+                    <span>Real-Time Systems (SCHED_FIFO, CPU Affinity, mlockall)</span>
                   </li>
                 </ul>
               </div>

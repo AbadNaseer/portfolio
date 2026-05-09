@@ -7,10 +7,10 @@ import TerminalEffect from '../ui/TerminalEffect';
 const Hero: React.FC = () => {
   const commands = [
     'cd abad-naseer-portfolio',
-    'npm install',
-    'npm run build',
-    'npm start',
-    'Deployment successful! Welcome to my portfolio...'
+    'kubectl apply -f argocd/app-of-apps.yaml',
+    'terraform apply -var-file=prod.tfvars',
+    'helm upgrade --install api ./charts/api-service',
+    'Deployment successful! 1M+ users served · 99.9% uptime'
   ];
 
   return (
@@ -18,7 +18,6 @@ const Hero: React.FC = () => {
       id="hero" 
       className="min-h-screen pt-24 pb-12 flex items-center relative overflow-hidden"
     >
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-dark-500">
         <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary-900/10 blur-[100px] rounded-full"></div>
         <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-secondary-900/10 blur-[100px] rounded-full"></div>
@@ -37,12 +36,21 @@ const Hero: React.FC = () => {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               Abad Naseer
             </h1>
-            <h2 className="text-2xl md:text-3xl text-slate-300 font-medium mb-6">
-              DevOps & Cloud Engineer · <span className="gradient-text">AWS · DevSecOps · AI Systems</span>
+            <h2 className="text-2xl md:text-3xl text-slate-300 font-medium mb-3">
+              DevOps &amp; Cloud Engineer · <span className="gradient-text">4+ Years</span>
             </h2>
+            <h3 className="text-lg text-slate-400 font-mono mb-6">
+              AWS · Kubernetes · GitOps · Terraform · DevSecOps · AI/MLOps
+            </h3>
+            <div className="flex flex-wrap gap-3 mb-6">
+              {['1M+ Users Served','99.9% Uptime','30% Cost Reduction','70% Faster Deploys','30+ Client Projects'].map(m => (
+                <span key={m} className="px-3 py-1 bg-primary-900/30 border border-primary-700/40 rounded-full text-primary-300 text-xs font-mono">{m}</span>
+              ))}
+            </div>
             <p className="text-slate-400 text-lg mb-8 max-w-lg">
-              I keep platforms online at scale, compress cloud spend, and ship AI products end-to-end —
-              from AWS-native LMS infrastructure serving 1M+ users to real-time trading systems.
+              I architect and operate cloud-native infrastructure at scale — AWS-native platforms serving 1M+ users,
+              GitOps pipelines with ArgoCD &amp; Helm, full-stack observability, and AI/MLOps infrastructure.
+              Open to remote worldwide.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">

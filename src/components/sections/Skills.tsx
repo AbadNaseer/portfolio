@@ -6,35 +6,32 @@ import ProgressBar from '../ui/ProgressBar';
 import TerminalEffect from '../ui/TerminalEffect';
 
 const Skills: React.FC = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const technicalSkills = [
-    { label: 'AWS (ECS/Fargate, RDS, CloudFront, WAF, Lambda)', percentage: 92 },
-    { label: 'Docker & Kubernetes (EKS)', percentage: 90 },
-    { label: 'CI/CD (GitHub Actions, Jenkins)', percentage: 92 },
-    { label: 'Infrastructure as Code (Terraform, Ansible)', percentage: 85 },
-    { label: 'Observability (Prometheus, Grafana, Loki, EFK)', percentage: 88 },
-    { label: 'DevSecOps & OWASP Testing', percentage: 82 },
+    { label: 'AWS (ECS/EKS, Lambda, CloudWatch, RDS, CloudFront, WAF)', percentage: 92 },
+    { label: 'Kubernetes — EKS · AKS · GKE (Helm, ArgoCD, GitOps, HPA, RBAC)', percentage: 90 },
+    { label: 'CI/CD — GitHub Actions · Jenkins · Zero-Downtime Deployments', percentage: 92 },
+    { label: 'IaC — Terraform · Ansible (AWS · Azure · GCP)', percentage: 87 },
+    { label: 'Observability — Prometheus · Grafana · Datadog · EFK · Jaeger · eBPF', percentage: 90 },
+    { label: 'DevSecOps — Vault · WAF · OWASP Testing · Kali Linux · SonarQube', percentage: 83 },
   ];
 
   const tools = [
-    { label: 'AI / MLOps (MLflow, Airflow, DVC, Ollama, RAG)', percentage: 85 },
-    { label: 'Kali Linux, SQLMap, SonarQube', percentage: 80 },
-    { label: 'Nginx, Blue-Green Deployments', percentage: 90 },
-    { label: 'eBPF, OpenTelemetry, Jaeger', percentage: 78 },
-    { label: 'Vault, SSL/TLS, fail2ban, UFW', percentage: 85 },
-    { label: 'Python, Bash, TypeScript, Go (learning)', percentage: 85 },
+    { label: 'AI / MLOps — MLflow · Airflow · DVC · Ollama · RAG · LangChain', percentage: 85 },
+    { label: 'Cloud Platforms — AWS · Azure (AKS) · GCP (GKE · Cloud Run)', percentage: 84 },
+    { label: 'Nginx · Blue-Green · Canary · GitOps Deployments', percentage: 90 },
+    { label: 'OpenTelemetry · Jaeger · eBPF (groundcover) · Distributed Tracing', percentage: 79 },
+    { label: 'HashiCorp Vault · SSL/TLS · fail2ban · UFW/iptables', percentage: 85 },
+    { label: 'Python · Bash · TypeScript · Kotlin · Java/Spring Boot', percentage: 85 },
   ];
 
   const terminalCommands = [
-    'aws ecs update-service --force-new-deployment',
-    'kubectl get pods --all-namespaces',
-    'terraform apply -auto-approve',
-    'helm upgrade --install obs ./kube-prometheus-stack',
-    'sqlmap -u https://target --batch --risk=3'
+    'kubectl apply -f argocd/app-of-apps.yaml',
+    'helm upgrade --install api ./charts/api-service -f values-prod.yaml',
+    'terraform apply -var-file=environments/prod.tfvars',
+    'aws ecs update-service --force-new-deployment --cluster prod',
+    'datadog-ci synthetics run-tests --public-id abc-123'
   ];
 
   return (
@@ -42,7 +39,7 @@ const Skills: React.FC = () => {
       <div className="container-custom">
         <SectionTitle 
           title="Technical Skills"
-          subtitle="A comprehensive overview of my technical expertise and proficiency levels."
+          subtitle="Full-stack DevOps — cloud, containers, GitOps, observability, security, and AI/MLOps."
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -55,12 +52,7 @@ const Skills: React.FC = () => {
             >
               <h3 className="text-xl font-bold mb-6 gradient-text">Core Competencies</h3>
               {technicalSkills.map((skill, index) => (
-                <ProgressBar 
-                  key={index}
-                  label={skill.label}
-                  percentage={skill.percentage}
-                  delay={index * 0.1}
-                />
+                <ProgressBar key={index} label={skill.label} percentage={skill.percentage} delay={index * 0.1} />
               ))}
             </motion.div>
 
@@ -69,15 +61,9 @@ const Skills: React.FC = () => {
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              <h3 className="text-xl font-bold mb-6 gradient-text">Tools & Technologies</h3>
+              <h3 className="text-xl font-bold mb-6 gradient-text">Tools &amp; Technologies</h3>
               {tools.map((tool, index) => (
-                <ProgressBar 
-                  key={index}
-                  label={tool.label}
-                  percentage={tool.percentage}
-                  color="from-secondary-500 to-primary-500"
-                  delay={index * 0.1}
-                />
+                <ProgressBar key={index} label={tool.label} percentage={tool.percentage} color="from-secondary-500 to-primary-500" delay={index * 0.1} />
               ))}
             </motion.div>
           </div>
@@ -92,43 +78,28 @@ const Skills: React.FC = () => {
               <h3 className="text-xl font-bold mb-6 gradient-text">DevOps Expertise</h3>
               <div className="card">
                 <ul className="space-y-3 text-slate-300">
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>AWS Production Ops at 1M+ User Scale (99.9% Uptime)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>Cloud Cost Engineering (30% AWS Reduction)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>Low/Zero-Downtime Migrations & Blue-Green Deployments</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>CI/CD Across Android, Laravel, Django, Next.js, Spring Boot</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>In-House Offensive Security (OWASP, Kali, SQLMap)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>Full-Stack Observability (Prometheus, Grafana, EFK, Jaeger, eBPF)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>AI Products End-to-End (Ollama, MLflow, Airflow, RAG, FAISS)</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-primary-500 mr-2">•</span>
-                    <span>Real-Time Systems (SCHED_FIFO, CPU Affinity, mlockall)</span>
-                  </li>
+                  {[
+                    'AWS Production Ops at 1M+ User Scale (99.9% Uptime)',
+                    'Cloud Cost Engineering — 30% AWS Reduction',
+                    'GitOps with ArgoCD — Drift Detection, Auto-Sync, Rollback',
+                    'Helm Chart Authoring — Multi-Environment Values, HPA, Ingress',
+                    'Multi-Cloud Kubernetes — EKS · AKS (Azure) · GKE (GCP)',
+                    'Datadog APM + SLOs + PagerDuty Burn-Rate Alerting',
+                    'Blue-Green & Zero-Downtime Deployments',
+                    'In-House Offensive Security (OWASP, Kali, SQLMap, WAF Tuning)',
+                    'AI Products End-to-End (Ollama, MLflow, Airflow, RAG, FAISS)',
+                    'Real-Time Systems (SCHED_FIFO, CPU Affinity, mlockall)',
+                  ].map(item => (
+                    <li key={item} className="flex items-start">
+                      <span className="text-primary-500 mr-2 mt-0.5">▸</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
             
-            <div className="mt-8">
+            <div>
               <h3 className="text-xl font-bold mb-6 gradient-text">Daily Command Line</h3>
               <TerminalEffect commands={terminalCommands} />
             </div>

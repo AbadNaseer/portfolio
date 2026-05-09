@@ -7,27 +7,39 @@ const Experience: React.FC = () => {
     {
       position: 'DevOps Engineer',
       company: 'Mediatiz Foundation',
-      period: 'Oct 2025 - Present',
+      period: 'Oct 2025 – Present',
       description: [
-        'Managed AWS infrastructure (ECS/Fargate, RDS, ALB, CloudFront, CloudWatch, SES, Route 53) for Mediatiz LMS and Khudi App serving 1M+ users with 20–30K concurrent requests at peak; sustained 99.9% uptime',
-        'Reduced AWS cloud costs by 30% through CloudWatch-driven auto-scaling, ECS task-definition tuning, and workload-aware right-sizing across staging and production clusters',
-        'Built GitHub Actions CI/CD pipelines for Android (APK/AAB), Laravel LMS, Django, and Next.js admin with zero-downtime ECS rollouts, Slack alerts, and Google Play Console automation',
-        'Architected and deployed PyBot — a Django + Ollama (Gemma 2B) local LLM tutor — eliminating external LLM API costs and addressing data-residency requirements for student PII',
-        'Built serverless Slack-to-Google Sheets automation on AWS Lambda, API Gateway, EventBridge, and S3 for daily cross-departmental reporting across 8 departments',
-        'Ran in-house OWASP security testing (brute-force, SQL injection, CSRF) on lms.mediatiz.org using Kali Linux, SQLMap, and SonarQube; validated WAF rules and produced remediation reports adopted by the development team'
+        'Architected AWS production infrastructure (ECS/Fargate, RDS, ALB, CloudFront, WAF, Lambda, Route 53, IAM, VPC) supporting 1M+ active users with 20–30K concurrent requests; sustained 99.9% uptime SLA',
+        'Reduced AWS cloud costs by 30% through CloudWatch-driven auto-scaling, ECS task-definition tuning, and workload-aware right-sizing; authored cost-tracking dashboards adopted org-wide',
+        'Designed GitHub Actions CI/CD pipelines for Android (APK/AAB), Laravel, Django, and Next.js with zero-downtime ECS rollouts, Slack deployment alerts, and Google Play Console automation',
+        'Deployed PyBot — Django + Ollama (Gemma 2B) local LLM tutor — eliminating external LLM API costs and addressing data-residency requirements for student PII',
+        'Built serverless Slack-to-Google Sheets reporting pipeline on AWS Lambda, API Gateway, EventBridge, and S3 serving 8 departments daily',
+        'Ran OWASP security testing (SQLi, CSRF, brute-force) using Kali Linux, SQLMap, and SonarQube; validated WAF rules and produced remediation reports adopted by the dev team'
       ]
     },
     {
       position: 'DevOps Engineer',
       company: 'Poshmaal Technologies',
-      period: 'Dec 2023 - Oct 2025',
+      period: 'Dec 2023 – Oct 2025',
       description: [
-        'Led full AWS-to-self-managed-VPS migration of firefly.online (IoT production platform) across EC2, ALB, RDS, ECS/ECR, VPC, S3, WAF, and Route 53 with measurable monthly cost reduction while maintaining client SLAs',
-        'Designed and implemented Blue-Green deployment strategy to run legacy Node.js and new Spring Boot environments in parallel; delivered a low-downtime production cutover via Nginx upstream switching',
-        'Architected Dev/Staging/Production environments from scratch on-premises; containerized and orchestrated 8+ microservices on Docker and Kubernetes with Nginx reverse proxy and resource quotas',
-        'Built Jenkins + GitHub Actions CI/CD pipelines reducing deployment cycle time by ~70% via parallel build stages, artifact caching, and automated rollback triggers',
-        'Implemented full-stack observability with Prometheus, Grafana, and Loki — custom service-level dashboards, real-time alerting, and centralized log aggregation',
-        'Hardened all environments with SSL/TLS (Let\'s Encrypt auto-renewal), SSH key restrictions, UFW/iptables firewalls, fail2ban, and Vault-based secrets management'
+        'Led full AWS-to-VPS migration of firefly.online (IoT platform) across EC2, ALB, RDS, ECS/ECR, VPC, S3, WAF, and Route 53 with measurable monthly cost reduction while maintaining client SLAs',
+        'Designed Blue-Green deployment strategy for Node.js → Spring Boot cutover; zero-downtime production switchover via Nginx upstream switching',
+        'Architected Dev/Staging/Production environments; containerized and orchestrated 8+ microservices on Docker and Kubernetes with Helm chart management, HPA, RBAC, and resource quotas',
+        'Built Jenkins + GitHub Actions CI/CD pipelines — parallel build stages, artifact caching, automated rollback triggers — reducing deployment cycle time by ~70%',
+        'Implemented ArgoCD GitOps for declarative, drift-detected deployments across all environments',
+        'Full-stack observability with Prometheus, Grafana, Loki, Datadog APM — custom SLO dashboards and PagerDuty alert routing'
+      ]
+    },
+    {
+      position: 'Independent DevOps Consultant',
+      company: 'Self-Employed (Fiverr & Upwork)',
+      period: 'Dec 2021 – Nov 2023',
+      description: [
+        'Delivered containerization, CI/CD, server administration, and cloud infrastructure solutions for 30+ SMB and enterprise clients worldwide; 5-star average · ~40% YoY revenue growth through repeat clients and referrals',
+        'Ran Kubernetes in production across EKS (AWS), AKS (Azure), and GKE (GCP) with Helm chart management, HPA, Ingress controllers, and RBAC; deployed Spring Boot and Node.js microservices with horizontal pod autoscaling',
+        'Integrated ArgoCD GitOps pipelines with automated sync, drift detection, and multi-environment rollback across dev/staging/production',
+        'Configured Datadog APM, infrastructure monitoring, and custom dashboards for client environments; set up SLOs and PagerDuty escalation routing',
+        'Automated server administration with Bash and Ansible — provisioning, patching, backup scheduling, and configuration management across 50+ Linux hosts'
       ]
     }
   ];
@@ -37,7 +49,7 @@ const Experience: React.FC = () => {
       <div className="container-custom">
         <SectionTitle 
           title="Work Experience"
-          subtitle="My professional journey and key responsibilities in previous roles."
+          subtitle="4+ years designing, deploying, and operating cloud-native infrastructure at scale."
         />
         
         <div className="mt-12">

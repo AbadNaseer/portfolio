@@ -37,7 +37,7 @@ const Hero: React.FC = () => {
               Abad Naseer
             </h1>
             <h2 className="text-2xl md:text-3xl text-slate-300 font-medium mb-3">
-              DevOps &amp; Cloud Engineer · <span className="gradient-text">4+ Years</span>
+              DevOps &amp; Cloud Engineer · <span className="gradient-text">3+ Years</span>
             </h2>
             <h3 className="text-lg text-slate-400 font-mono mb-6">
               AWS · Kubernetes · GitOps · Terraform · DevSecOps · AI/MLOps

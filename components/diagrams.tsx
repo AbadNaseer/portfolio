@@ -45,7 +45,7 @@ function Frame({ children, viewBox }: { children: React.ReactNode; viewBox: stri
 
 export function SmartzeesDiagram() {
   return (
-    <Frame viewBox="0 0 900 250">
+    <Frame viewBox="0 0 900 278">
       <title>Request path: the model classifies intent, the backend owns state, the index serves search</title>
       <Defs id="ah-sz" />
       <rect x="8" y="96" width="126" height="58" rx="9" fill={C.box} stroke={C.edge} />
@@ -60,7 +60,7 @@ export function SmartzeesDiagram() {
       <text x="277" y="142" fill={C.dim} fontSize="11.5" textAnchor="middle">bookings, session</text>
 
       <line x1="277" y1="70" x2="277" y2="42" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-sz)" />
-      <rect x="192" y="4" width="170" height="34" rx="8" fill={C.box} stroke={C.edge} />
+      <rect x="172" y="4" width="210" height="34" rx="8" fill={C.box} stroke={C.edge} />
       <text x="277" y="26" fill={C.dim} fontSize="12" textAnchor="middle">LLM: intent + phrasing only</text>
 
       <line x1="358" y1="125" x2="414" y2="125" stroke={C.accent} strokeWidth="1.6" markerEnd="url(#ah-sz)" />
@@ -80,7 +80,10 @@ export function SmartzeesDiagram() {
       <text x="743" y="122" fill={C.ink} fontSize="14" textAnchor="middle">Ranked results</text>
       <text x="743" y="140" fill={C.dim} fontSize="11.5" textAnchor="middle">cosine, unit vectors</text>
 
-      <text x="8" y="26" fill={C.faint} fontSize="11">Built once on a background thread, so /health answers during a restart</text>
+      {/* Caption sits on its own row under everything. It has collided with the
+          LLM box (y 4-38) and clipped the right edge when placed inline, so the
+          diagram is taller instead of the text being squeezed between shapes. */}
+      <text x="8" y="270" fill={C.faint} fontSize="11">Built once on a background thread, so /health answers during a restart</text>
     </Frame>
   );
 }
@@ -153,7 +156,7 @@ export function MediatizDiagram() {
       <text x="306" y="122" fill={C.accent} fontSize="11" textAnchor="middle">30% less spend</text>
 
       <line x1="306" y1="142" x2="306" y2="172" stroke={C.accent} strokeWidth="1.5" markerEnd="url(#ah-md)" />
-      <rect x="216" y="176" width="180" height="42" rx="8" fill={C.accentBox} stroke={C.accentEdge} />
+      <rect x="204" y="176" width="204" height="42" rx="8" fill={C.accentBox} stroke={C.accentEdge} />
       <text x="306" y="202" fill={C.accent} fontSize="12.5" textAnchor="middle">CloudWatch drives scaling</text>
 
       <line x1="392" y1="89" x2="448" y2="89" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-md)" />
@@ -191,7 +194,7 @@ export function FireflyDiagram() {
       ))}
 
       <line x1="330" y1="82" x2="330" y2="112" stroke={C.accent} strokeWidth="1.6" markerEnd="url(#ah-ff)" />
-      <rect x="196" y="116" width="268" height="42" rx="9" fill={C.accentBox} stroke={C.accentEdge} />
+      <rect x="148" y="116" width="364" height="42" rx="9" fill={C.accentBox} stroke={C.accentEdge} />
       <text x="330" y="142" fill={C.accent} fontSize="12.5" textAnchor="middle">Blue green cutover, replication caught up first</text>
 
       <line x1="330" y1="162" x2="330" y2="188" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-ff)" />

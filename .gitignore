@@ -37,3 +37,9 @@ lerna-debug.log*
 # Bolt AI
 .bolt/
 .bolt
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo

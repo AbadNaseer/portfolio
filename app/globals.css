@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: #0A0B0D;
+  color: #F2F1EC;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* The site is a committed single-look design: near-black ground, one acid accent.
+   It is not theme-reactive, so both grounds are painted explicitly above. */
+
+@layer components {
+  .shell { @apply mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-10; }
+
+  .sec-label {
+    @apply font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] text-dim;
+  }
+
+  .chip {
+    @apply font-mono text-[11.5px] text-muted border border-[#24262C] rounded-full px-[11px] py-[5px];
+  }
+
+  .card {
+    @apply bg-raised border border-line rounded-2xl;
+  }
+
+  .h-display {
+    @apply font-display font-medium tracking-[-0.025em] text-ink;
+  }
+
+  .prose-body {
+    @apply text-[16px] sm:text-[16.5px] leading-[1.75] text-muted;
+  }
+
+  .focusable {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ground rounded-sm;
+  }
+}
+
+::selection { background: #C7F04B; color: #0A0B0D; }

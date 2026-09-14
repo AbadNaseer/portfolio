@@ -1,3 +1,5 @@
+import { InferenceSim } from './inference-sim';
+
 /**
  * Inline SVG architecture diagrams, one per case study.
  * Palette is fixed to the site tokens so they read the same everywhere:
@@ -258,67 +260,11 @@ export function GitopsDiagram() {
   );
 }
 
-export function InferenceDiagram() {
-  const replicas = [408, 478, 548];
-  return (
-    <Frame viewBox="0 0 900 300">
-      <title>Requests reach a gateway, which serves them from a pool of vLLM replicas on shared GPU nodes</title>
-      <Defs id="ah-inf" />
-
-      <rect x="341" y="4" width="330" height="34" rx="8" fill={C.box} stroke={C.edge} />
-      <text x="506" y="26" fill={C.dim} fontSize="11.5" textAnchor="middle">
-        Autoscaler: scales on queue depth, not CPU
-      </text>
-      <line x1="506" y1="42" x2="506" y2="56" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-inf)" />
-
-      <rect x="8" y="100" width="120" height="58" rx="9" fill={C.box} stroke={C.edge} />
-      <text x="68" y="126" fill={C.ink} fontSize="14" textAnchor="middle">Requests</text>
-      <text x="68" y="144" fill={C.dim} fontSize="11.5" textAnchor="middle">product teams</text>
-
-      <line x1="134" y1="129" x2="186" y2="129" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-inf)" />
-
-      <rect x="192" y="80" width="140" height="98" rx="9" fill={C.box} stroke={C.edge} />
-      <text x="262" y="108" fill={C.ink} fontSize="14" textAnchor="middle">Gateway</text>
-      <text x="262" y="130" fill={C.dim} fontSize="11.5" textAnchor="middle">one route</text>
-      <text x="262" y="146" fill={C.dim} fontSize="11.5" textAnchor="middle">per model</text>
-
-      <line x1="338" y1="129" x2="390" y2="129" stroke={C.accent} strokeWidth="1.6" markerEnd="url(#ah-inf)" />
-
-      <rect x="396" y="60" width="224" height="138" rx="9" fill={C.accentBox} stroke={C.accentEdge} />
-      <text x="508" y="86" fill={C.accent} fontSize="14" textAnchor="middle">GPU node pool</text>
-      {replicas.map((x) => (
-        <g key={x}>
-          <rect x={x} y="100" width="64" height="36" rx="7" fill={C.box} stroke={C.accentEdge} />
-          <text x={x + 32} y="123" fill={C.accentDim} fontSize="11.5" textAnchor="middle">
-            vLLM
-          </text>
-        </g>
-      ))}
-      <text x="508" y="160" fill={C.accentDim} fontSize="11.5" textAnchor="middle">continuous batching</text>
-      <text x="508" y="178" fill={C.accentDim} fontSize="11.5" textAnchor="middle">pooled, not one node per model</text>
-
-      <line x1="626" y1="129" x2="678" y2="129" stroke={C.faint} strokeWidth="1.4" markerEnd="url(#ah-inf)" />
-      <rect x="684" y="100" width="170" height="58" rx="9" fill={C.box} stroke={C.edge} />
-      <text x="769" y="126" fill={C.ink} fontSize="14" textAnchor="middle">Metrics</text>
-      <text x="769" y="144" fill={C.dim} fontSize="11.5" textAnchor="middle">Prometheus, Grafana</text>
-
-      <line x1="508" y1="204" x2="508" y2="224" stroke={C.faint} strokeWidth="1.4" strokeDasharray="4 4" markerEnd="url(#ah-inf)" />
-      <rect x="390" y="228" width="236" height="52" rx="8" fill={C.box} stroke={C.edge} />
-      <text x="508" y="250" fill={C.dim} fontSize="11.5" textAnchor="middle">Model weights on a shared volume</text>
-      <text x="508" y="268" fill={C.faint} fontSize="11.5" textAnchor="middle">a restart is not a re-download</text>
-
-      <text x="8" y="294" fill={C.faint} fontSize="11">
-        Two models can serve the same traffic side by side, so the choice is measured rather than quoted.
-      </text>
-    </Frame>
-  );
-}
-
 export const diagrams = {
   smartzees: SmartzeesDiagram,
   nextlab: NextlabDiagram,
   mediatiz: MediatizDiagram,
   firefly: FireflyDiagram,
   gitops: GitopsDiagram,
-  inference: InferenceDiagram,
+  inference: InferenceSim,
 } as const;

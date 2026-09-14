@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import { Nav } from '@/components/nav';
 import { Footer } from '@/components/sections';
 import { diagrams } from '@/components/diagrams';
-import { ArrowLeft, ArrowRight, ArrowUpRight, GitHub } from '@/components/icons';
+import { ArrowLeft, ArrowRight, ArrowUpRight } from '@/components/icons';
 import { work, getWork } from '@/content/work';
 
 export function generateStaticParams() {
@@ -238,7 +238,7 @@ export default function CaseStudy({ params }: { params: { slug: string } }) {
         )}
 
         {/* Links out */}
-        {(item.live || item.repo) && (
+        {item.live && (
           <Row label="See it">
             <div className="flex flex-wrap gap-3">
               {item.live && (
@@ -250,17 +250,6 @@ export default function CaseStudy({ params }: { params: { slug: string } }) {
                 >
                   {item.live.label}
                   <ArrowUpRight />
-                </a>
-              )}
-              {item.repo && (
-                <a
-                  href={item.repo.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focusable flex items-center gap-2.5 rounded-lg border border-edge px-5 py-3 text-[14.5px] font-medium text-ink transition-colors hover:border-muted"
-                >
-                  <GitHub />
-                  {item.repo.label}
                 </a>
               )}
             </div>

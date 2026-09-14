@@ -39,7 +39,6 @@ export type Work = {
   agents?: { heading: string; blurb: string; items: Agent[] };
   diagram?: 'smartzees' | 'mediatiz' | 'firefly' | 'gitops' | 'nextlab' | 'inference';
   live?: { label: string; href: string };
-  repo?: { label: string; href: string };
 };
 
 export const work: Work[] = [
@@ -328,21 +327,19 @@ export const work: Work[] = [
     index: '06',
     kicker: 'Kubernetes · GitOps',
     title: 'GitOps platform',
-    status: 'Open source reference build',
+    status: 'Reference build, not client work',
     summary:
       'ArgoCD App of Apps over Helm charts with per environment values, drift detection every three minutes and self healing. CI tags each image by commit SHA and writes the override back, so services roll independently.',
     metric: { value: '10', note: 'services across three environments, fully declarative' },
     tags: ['Polyglot, 4 languages', 'Self healing drift'],
     stack: ['Kubernetes', 'ArgoCD', 'Helm', 'Terraform', 'Prometheus', 'External Secrets'],
-    repo: { label: 'AbadNaseer/k8s-gitops-argocd', href: 'https://github.com/AbadNaseer/k8s-gitops-argocd' },
 
     lede:
-      'A production-shaped GitOps platform, built in the open. Ten polyglot microservices across three environments, with Git as the only source of truth and ArgoCD reconciling the cluster back to it.',
+      'A production-shaped GitOps platform, built end to end as a reference. Ten polyglot microservices across three environments, with Git as the only source of truth and ArgoCD reconciling the cluster back to it.',
     meta: [
       { label: 'Role', value: 'Architecture and build' },
       { label: 'Services', value: '10, in Go, Java, Node.js and Python' },
       { label: 'Environments', value: 'dev, staging, prod' },
-      { label: 'Source', value: 'github.com/AbadNaseer', href: 'https://github.com/AbadNaseer/k8s-gitops-argocd' },
     ],
     problem: {
       heading: 'A cluster nobody can describe is a cluster nobody can rebuild',

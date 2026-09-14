@@ -42,7 +42,7 @@ export const metadata: Metadata = {
     'RAG',
     'LLM infrastructure',
   ],
-  authors: [{ name: profile.name, url: profile.links.github }],
+  authors: [{ name: profile.name, url: profile.siteUrl }],
   creator: profile.name,
   openGraph: {
     type: 'website',
@@ -69,7 +69,7 @@ const personSchema = {
   url: profile.siteUrl,
   email: `mailto:${profile.links.email}`,
   address: { '@type': 'PostalAddress', addressLocality: 'Islamabad', addressCountry: 'PK' },
-  sameAs: [profile.links.github, profile.links.linkedin].filter(Boolean),
+  sameAs: [profile.links.linkedin, profile.links.upwork].filter(Boolean),
   knowsAbout: ['Kubernetes', 'AWS', 'Google Cloud', 'Terraform', 'GitOps', 'Observability', 'RAG systems'],
 };
 

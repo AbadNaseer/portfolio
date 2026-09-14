@@ -33,7 +33,6 @@ export const profile = {
 
   links: {
     email: 'abad.naseerfast@gmail.com',
-    github: 'https://github.com/AbadNaseer',
     linkedin: 'https://linkedin.com/in/abadnaseer',
     upwork: 'https://www.upwork.com/freelancers/~014f1d563a353a0012',
     resume: '/Abad_Naseer_Resume.pdf',

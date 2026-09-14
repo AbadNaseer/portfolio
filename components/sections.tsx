@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { profile } from '@/content/profile';
-import { repos } from '@/content/repos';
 import { roles, credentials, skills } from '@/content/experience';
-import { ArrowUpRight, GitHub, LinkedIn, Upwork, Download, Mail } from './icons';
+import { LinkedIn, Upwork, Download, Mail } from './icons';
 
 export function SectionHead({
   label,
@@ -25,54 +24,6 @@ export function SectionHead({
       </div>
       {aside}
     </div>
-  );
-}
-
-export function OpenSource() {
-  return (
-    <section id="open-source" className="shell scroll-mt-20 py-14 sm:py-16">
-      <SectionHead
-        label="Open source"
-        title="Infrastructure you can read"
-        aside={
-          <a
-            href={profile.links.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="focusable flex items-center gap-2 text-[14.5px] text-muted transition-colors hover:text-accent"
-          >
-            <GitHub />
-            github.com/AbadNaseer
-          </a>
-        }
-      />
-
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {repos.map((r) => (
-          <li key={r.name}>
-            <a
-              href={r.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="focusable card group flex h-full flex-col gap-2.5 p-[22px] transition-colors hover:border-edge"
-            >
-              <span className="flex items-center justify-between gap-2 font-mono text-sm text-ink">
-                {r.name}
-                <ArrowUpRight className="h-3 w-3 shrink-0 text-dim transition-colors group-hover:text-accent" />
-              </span>
-              <span className="flex-grow text-[13.5px] leading-[1.6] text-[#7E818A]">{r.blurb}</span>
-              <span className="mt-0.5 flex flex-wrap gap-[7px]">
-                {r.chips.map((c) => (
-                  <span key={c} className="chip">
-                    {c}
-                  </span>
-                ))}
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
   );
 }
 
@@ -128,7 +79,6 @@ export function Experience() {
 
 export function Contact() {
   const social = [
-    { label: 'GitHub', href: profile.links.github, Icon: GitHub },
     { label: 'LinkedIn', href: profile.links.linkedin, Icon: LinkedIn },
     ...(profile.links.upwork ? [{ label: 'Upwork', href: profile.links.upwork, Icon: Upwork }] : []),
     { label: 'Résumé, PDF', href: profile.links.resume, Icon: Download },

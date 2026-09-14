@@ -37,7 +37,7 @@ export type Work = {
   approach: { heading: string; paras: string[] };
   results?: { heading: string; rows: ResultRow[]; footnote?: string };
   agents?: { heading: string; blurb: string; items: Agent[] };
-  diagram?: 'smartzees' | 'mediatiz' | 'firefly' | 'gitops' | 'nextlab';
+  diagram?: 'smartzees' | 'mediatiz' | 'firefly' | 'gitops' | 'nextlab' | 'inference';
   live?: { label: string; href: string };
   repo?: { label: string; href: string };
 };
@@ -45,8 +45,45 @@ export type Work = {
 export const work: Work[] = [
 
   {
-    slug: 'smartzees',
+    slug: 'gpu-inference-platform',
     index: '01',
+    kicker: 'AI infrastructure',
+    title: 'GPU inference platform',
+    status: 'Production platform',
+    summary:
+      'The layer between a chosen model and a served one. Models deploy onto pooled GPU nodes, scale with real demand, report on themselves, and can be benchmarked against each other under the same load before anyone commits capacity to one.',
+    tags: ['vLLM runtime', 'GPU autoscaling'],
+    stack: ['Kubernetes', 'vLLM', 'Python', 'GPU', 'Helm', 'Prometheus'],
+    featured: true,
+
+    lede:
+      'Serving a language model in production is a different job from choosing one. This is the layer that makes the second job someone else\'s problem: models go up, scale with demand, and report on themselves.',
+    meta: [
+      { label: 'Role', value: 'Platform and inference infrastructure' },
+      { label: 'Timeline', value: '2026, ongoing' },
+      { label: 'Runtime', value: 'vLLM on GPU nodes' },
+    ],
+    diagram: 'inference',
+    problem: {
+      heading: 'Everybody wants to ship a model, nobody wants to run one',
+      paras: [
+        'A model that works in a notebook is not a service. It needs a GPU node that is the right size, a runtime that batches requests properly, somewhere for the weights to live so a restart is not a download, and autoscaling that reacts to real traffic rather than to CPU.',
+        'Product teams end up either overprovisioning a GPU that sits idle most of the day, or hand rolling a serving stack that only one person understands. Neither survives contact with a second model.',
+      ],
+    },
+    approach: {
+      heading: 'One platform, many models',
+      paras: [
+        'vLLM does the serving, so continuous batching and paged attention come for free rather than being reinvented. Kubernetes does the scheduling, which means GPU nodes are a pool rather than a pet, and a model is a workload like any other.',
+        'On top of that sits the part teams actually touch: deploy a model, scale it, see its metrics, and benchmark one against another under the same load before committing to it. The comparison is the point. Choosing a model on published numbers rather than your own traffic is how you end up paying for capacity you do not need.',
+      ],
+    },
+  },
+
+
+  {
+    slug: 'smartzees',
+    index: '02',
     kicker: 'Conversational commerce',
     title: 'SmartZees',
     status: 'Live in production',
@@ -128,42 +165,6 @@ export const work: Work[] = [
       ],
       footnote:
         "Voice moved from the browser's speech API to server side speech recognition and synthesis in the same milestone, which took the product out of Chrome only and gave the assistant one consistent voice. A small cache on repeated phrases cut a repeated voice turn from 10.0 to 6.9 seconds.",
-    },
-  },
-
-
-  {
-    slug: 'servescale',
-    index: '02',
-    kicker: 'AI infrastructure',
-    title: 'ServeScale',
-    status: 'Production platform',
-    summary:
-      'The layer between a chosen model and a served one. Models deploy onto pooled GPU nodes, scale with real demand, report on themselves, and can be benchmarked against each other under the same load before anyone commits capacity to one.',
-    tags: ['vLLM runtime', 'GPU autoscaling'],
-    stack: ['Kubernetes', 'vLLM', 'Python', 'GPU', 'Helm', 'Prometheus'],
-    featured: true,
-
-    lede:
-      'Serving a language model in production is a different job from choosing one. ServeScale is the layer that makes the second job someone else\'s problem: models go up, scale with demand, and report on themselves.',
-    meta: [
-      { label: 'Role', value: 'Platform and inference infrastructure' },
-      { label: 'Timeline', value: '2026, ongoing' },
-      { label: 'Runtime', value: 'vLLM on GPU nodes' },
-    ],
-    problem: {
-      heading: 'Everybody wants to ship a model, nobody wants to run one',
-      paras: [
-        'A model that works in a notebook is not a service. It needs a GPU node that is the right size, a runtime that batches requests properly, somewhere for the weights to live so a restart is not a download, and autoscaling that reacts to real traffic rather than to CPU.',
-        'Product teams end up either overprovisioning a GPU that sits idle most of the day, or hand rolling a serving stack that only one person understands. Neither survives contact with a second model.',
-      ],
-    },
-    approach: {
-      heading: 'One platform, many models',
-      paras: [
-        'vLLM does the serving, so continuous batching and paged attention come for free rather than being reinvented. Kubernetes does the scheduling, which means GPU nodes are a pool rather than a pet, and a model is a workload like any other.',
-        'On top of that sits the part teams actually touch: deploy a model, scale it, see its metrics, and benchmark one against another under the same load before committing to it. The comparison is the point. Choosing a model on published numbers rather than your own traffic is how you end up paying for capacity you do not need.',
-      ],
     },
   },
 

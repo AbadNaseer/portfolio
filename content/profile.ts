@@ -6,15 +6,15 @@ export const profile = {
 
   // The one sentence the whole site rests on.
   headline: {
-    before: 'I build the infrastructure behind cloud platforms, and the ',
-    accent: 'AI products',
-    after: ' that run on top of it.',
+    before: 'I build the infrastructure that serves ',
+    accent: 'AI in production',
+    after: ', and cut what it costs to run.',
   },
   headlinePlain:
-    'I build the infrastructure behind cloud platforms, and the AI products that run on top of it.',
+    'I build the infrastructure that serves AI in production, and cut what it costs to run.',
 
   intro:
-    'Most people do one or the other. I do both: the AWS and Kubernetes underneath, and the Python services, retrieval systems and voice pipelines on top. Currently Platform Engineer at Ccript, building GPU inference infrastructure and rebuilding a franchise reporting platform on GCP.',
+    'Models on GPU, retrieval and voice pipelines, and the Kubernetes and Terraform underneath all of it. I have taken a third off one AWS bill and sixty percent off another, and I write the Python that runs on what I build. Currently Platform Engineer at Ccript.',
 
   stack: ['AWS', 'GCP', 'Kubernetes', 'Terraform', 'Python', 'FastAPI', 'Prometheus', 'RAG / LLM'],
 

@@ -56,9 +56,24 @@ export default function CaseStudy({ params }: { params: { slug: string } }) {
             <span className="font-mono text-xs text-accent">CASE STUDY {item.index}</span>
             <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#3A3D44]" />
             <span className="sec-label">{item.kicker}</span>
+            {item.status && (
+              <>
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#3A3D44]" />
+                <span className="flex items-center gap-2 text-[13px] text-ink">
+                  <span aria-hidden="true" className="h-[6px] w-[6px] rounded-full bg-accent" />
+                  {item.status}
+                </span>
+              </>
+            )}
           </div>
 
-          <h1 className="h-display max-w-[900px] text-[32px] leading-[1.1] sm:text-[44px] lg:text-[58px] lg:leading-[1.08]">
+          {/* The project name. Without it, anyone arriving from a shared link or a
+              search result reads the whole page without learning what it is called. */}
+          <p className="font-display text-[19px] font-medium tracking-[-0.01em] text-ink sm:text-[22px]">
+            {item.title}
+          </p>
+
+          <h1 className="h-display -mt-2 max-w-[900px] text-[32px] leading-[1.1] sm:text-[44px] lg:text-[58px] lg:leading-[1.08]">
             {item.problem.heading}
           </h1>
 

@@ -52,6 +52,6 @@ export const skills = [
   },
   {
     group: 'AI systems & backend',
-    items: ['RAG, FAISS, pgvector, MiniLM', 'Gemini, Ollama, local LLMs', 'FastAPI, Django, Spring Boot', 'PostgreSQL, MySQL, Redis, Kafka'],
+    items: ['RAG, FAISS, pgvector, MiniLM', 'vLLM GPU serving, Gemini, Ollama', 'Python, FastAPI, Django, Spring Boot', 'PostgreSQL, MySQL, Redis, Kafka'],
   },
 ];

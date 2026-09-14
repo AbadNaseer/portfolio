@@ -17,10 +17,11 @@ export default function Home() {
         <section id="work" className="shell scroll-mt-20 py-14 sm:py-16">
           <SectionHead
             label="Selected work"
-            title="Five things worth reading about"
+            title="Six systems worth reading about"
             aside={
               <p className="max-w-[300px] text-[14.5px] leading-[1.6] text-dim sm:text-right">
-                Every number below was measured, not estimated.
+                Five of the six are running in production today. Every number below was
+                measured, not estimated.
               </p>
             }
           />

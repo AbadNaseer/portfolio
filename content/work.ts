@@ -20,8 +20,11 @@ export type Work = {
   title: string;
   /** Shown on the landing card. One paragraph, no more. */
   summary: string;
-  /** The single number the card is anchored by, with the conditions it was measured under. */
-  metric: { value: string; note: string };
+  /** The single number the card is anchored by, with the conditions it was measured under.
+   *  Optional: not every system's value is a number, and a made-up one is worse than none. */
+  metric?: { value: string; note: string };
+  /** Short, honest provenance. Separates shipped systems from reference builds. */
+  status?: string;
   tags: string[];
   stack: string[];
   shot?: { src: string; alt: string; chrome: string };
@@ -40,11 +43,13 @@ export type Work = {
 };
 
 export const work: Work[] = [
+
   {
     slug: 'smartzees',
     index: '01',
     kicker: 'Conversational commerce',
     title: 'SmartZees',
+    status: 'Live in production',
     summary:
       'Three production AI assistants on one shared architecture. Retrieval over a vector store, with the backend owning all state, search and money math so the model only classifies intent and phrases the reply.',
     metric: { value: '787×', note: 'faster search, measured on a 25,631 product catalog' },
@@ -126,19 +131,18 @@ export const work: Work[] = [
     },
   },
 
-  // TODO(abad): metric.value is a placeholder. Fill in one measured number before
-  // this ships: tokens/sec at a given batch size, cold-start time for a model, or
-  // GPU utilisation before and after. Everything else here is already accurate.
+
   {
     slug: 'servescale',
     index: '02',
     kicker: 'AI infrastructure',
     title: 'ServeScale',
+    status: 'Production platform',
     summary:
-      'A Kubernetes native platform for running language models on GPU. Deploy a model, let it scale, watch it, and benchmark it, without anyone on the product team having to operate an inference server.',
-    metric: { value: 'TODO', note: 'placeholder, see the note above this entry' },
-    tags: ['vLLM', 'GPU', 'Kubernetes'],
+      'The layer between a chosen model and a served one. Models deploy onto pooled GPU nodes, scale with real demand, report on themselves, and can be benchmarked against each other under the same load before anyone commits capacity to one.',
+    tags: ['vLLM runtime', 'GPU autoscaling'],
     stack: ['Kubernetes', 'vLLM', 'Python', 'GPU', 'Helm', 'Prometheus'],
+    featured: true,
 
     lede:
       'Serving a language model in production is a different job from choosing one. ServeScale is the layer that makes the second job someone else\'s problem: models go up, scale with demand, and report on themselves.',
@@ -163,15 +167,116 @@ export const work: Work[] = [
     },
   },
 
+
+  {
+    slug: 'firefly-migration',
+    index: '03',
+    kicker: 'Migration',
+    title: 'Firefly.online, off the cloud',
+    status: 'Live, migration complete',
+    summary:
+      'Moved an IoT SaaS platform off AWS onto self managed bare metal with a blue green cutover. PostgreSQL, Redis persistence and object storage all migrated while customers stayed online.',
+    metric: { value: '~60%', note: 'lower infrastructure spend afterwards' },
+    tags: ['Zero downtime', 'Blue / green'],
+    stack: ['PostgreSQL', 'Redis', 'Nginx', 'Grafana', 'Prometheus', 'Spring Boot'],
+
+    lede:
+      'Firefly.online is an IoT SaaS platform built on Node.js, React and PostgreSQL. It ran entirely on AWS managed services. I led the move to self-managed bare metal, end to end, without taking the product offline.',
+    meta: [
+      { label: 'Role', value: 'DevOps Engineer, migration lead' },
+      { label: 'Timeline', value: 'Dec 2023 to Oct 2025' },
+      { label: 'Downtime', value: 'None, customer facing' },
+      { label: 'Outcome', value: '~60% lower spend' },
+    ],
+    problem: {
+      heading: 'Every managed service was a line item and a dependency',
+      paras: [
+        'EC2, ECS, RDS, ALB, S3, CloudFront, Lambda and Redis. Convenient, and expensive at the platform’s size, with limited control over placement and tuning. The business wanted the spend down and the control back.',
+        'The constraint was that customers were live on it. A migration that needed a maintenance window long enough to move a production PostgreSQL database and its object storage was not acceptable.',
+      ],
+    },
+    diagram: 'firefly',
+    approach: {
+      heading: 'Stand the new one up, prove it, then move the traffic',
+      paras: [
+        'Every managed service got a self-hosted equivalent provisioned and running in parallel: PostgreSQL for RDS, nginx for the load balancer, self-hosted object storage for S3, Redis on our own hardware. The new stack ran alongside the old one until it was demonstrably correct.',
+        'The cutover was blue green: data migrated with replication catching up to the live database, then traffic switched. PostgreSQL, Redis persistence and object storage all moved with no customer-facing downtime, and infrastructure spend fell by roughly sixty percent.',
+        'The platform was simultaneously moving from Node.js to Java Spring Boot, so I designed and provisioned the development, staging and production environments for the new stack: Ubuntu hosts with Java, Maven, Docker, PostgreSQL, Redis, Apache Kafka and nginx upstream load balancing across multiple backend instances.',
+        'Then I made it observable and hardened it: Grafana, Prometheus, Loki and Node Exporter for metrics, centralised logging and alerting, with Let’s Encrypt, UFW, Fail2ban and SSH key restrictions across every environment. GitHub Actions and SonarQube handled code quality gates, image builds and per-environment deploys.',
+      ],
+    },
+    results: {
+      heading: 'What the move produced',
+      rows: [
+        { measure: 'Infrastructure spend', before: 'baseline', after: '~60% lower', change: 'same platform' },
+        { measure: 'Customer facing downtime', before: 'n/a', after: 'zero', change: 'blue green cutover' },
+        { measure: 'AWS managed services replaced', before: '8', after: '0', change: 'all self hosted' },
+        { measure: 'Environments rebuilt', before: 'ad hoc', after: '3', change: 'dev, staging, prod' },
+      ],
+    },
+  },
+
+
+  {
+    slug: 'mediatiz',
+    index: '04',
+    kicker: 'Cloud cost · reliability',
+    title: 'Mediatiz Foundation',
+    status: 'Live in production',
+    summary:
+      'Ran the AWS estate behind an LMS and mobile app serving over a million users at 20K to 30K concurrent requests, then took a third of the bill out of it without touching uptime.',
+    metric: { value: '30%', note: 'of AWS spend removed, at 99.9% uptime' },
+    tags: ['1M+ users', 'Local LLM tutor'],
+    stack: ['ECS', 'RDS', 'CloudWatch', 'Lambda', 'GitHub Actions', 'Ollama'],
+    live: { label: 'mediatiz.org', href: 'https://mediatiz.org' },
+
+    lede:
+      'Mediatiz runs a media literacy programme at national scale: a learning platform and an Android app used by hundreds of thousands of students and teachers. I owned the AWS infrastructure underneath it, the release pipelines that shipped to it, and the reporting that ran on top.',
+    meta: [
+      { label: 'Role', value: 'DevOps Engineer' },
+      { label: 'Timeline', value: 'Oct 2025 to Apr 2026' },
+      { label: 'Scale', value: '1M+ users, 20K to 30K concurrent' },
+      { label: 'Live', value: 'mediatiz.org', href: 'https://mediatiz.org' },
+    ],
+    problem: {
+      heading: 'A bill sized for the peak, paid at every hour of the day',
+      paras: [
+        'The platform had to survive classroom-hour spikes of twenty to thirty thousand concurrent requests, so everything had been provisioned for the spike and left there. Outside those hours the same capacity sat idle and still billed.',
+        'Separately, an AI tutor feature was planned on a third party LLM API. That meant a per-token bill that scaled with student numbers, and student questions leaving the country, which the programme could not accept.',
+      ],
+    },
+    diagram: 'mediatiz',
+    approach: {
+      heading: 'Follow the actual load, and bring the model in house',
+      paras: [
+        'I put the scaling decisions on real signals: CloudWatch driven auto-scaling, ECS task definitions tuned to what the containers actually used rather than what had been guessed, and workload-aware right-sizing across staging and production. Thirty percent of the bill came off, and uptime stayed at 99.9%.',
+        'For the tutor I built PyBot instead: Django in front of Ollama running Gemma 2B on self-hosted infrastructure. No external API bill, and student data never leaves the estate.',
+        'I also built the release pipelines for four codebases at once, an Android app, a Laravel LMS, a Django service and a Next.js admin dashboard, with zero-downtime ECS rollouts, Slack deploy alerts and Play Console automation. Cross-departmental reporting moved onto a serverless Lambda, API Gateway, EventBridge and S3 path that replaced a manual workflow for eight departments.',
+        'And I ran the security testing in house against staging, brute force, SQL injection and CSRF, with SQLMap and SonarQube, then handed the development team a remediation report they adopted.',
+      ],
+    },
+    results: {
+      heading: 'Measured over the engagement',
+      rows: [
+        { measure: 'AWS monthly spend', before: 'baseline', after: '30% lower', change: 'same workload' },
+        { measure: 'Uptime at peak load', before: 'n/a', after: '99.9%', change: 'sustained' },
+        { measure: 'External LLM API cost', before: 'per token', after: 'zero', change: 'self hosted Gemma 2B' },
+        { measure: 'Departments on manual reporting', before: '8', after: '0', change: 'serverless pipeline' },
+      ],
+    },
+  },
+
+
   {
     slug: 'nextlab',
-    index: '03',
+    index: '05',
     kicker: 'Multi-tenant SaaS',
     title: 'NextLab',
+    status: 'Live commercial product',
     summary:
       'A pathology lab management platform running as a commercial product: patient intake, test templates, branded PDF reports, billing, commissions and analytics, sold on five subscription tiers to labs across Pakistan.',
     metric: { value: '1000+', note: 'active users across paying laboratories' },
-    tags: ['nextlab.com.pk', 'Live product'],
+    tags: ['Four actor types', 'Billing and commissions'],
     stack: ['Django REST', 'Next.js 14', 'PostgreSQL', 'Docker', 'Celery', 'Redis'],
     shot: {
       src: '/img/work/nextlab.webp',
@@ -216,110 +321,17 @@ export const work: Work[] = [
     },
   },
 
-  {
-    slug: 'mediatiz',
-    index: '04',
-    kicker: 'Cloud cost · reliability',
-    title: 'Mediatiz Foundation',
-    summary:
-      'Ran the AWS estate behind an LMS and mobile app serving over a million users at 20K to 30K concurrent requests, then took a third of the bill out of it without touching uptime.',
-    metric: { value: '30%', note: 'of AWS spend removed, at 99.9% uptime' },
-    tags: ['mediatiz.org', 'Local LLM tutor'],
-    stack: ['ECS', 'RDS', 'CloudWatch', 'Lambda', 'GitHub Actions', 'Ollama'],
-    live: { label: 'mediatiz.org', href: 'https://mediatiz.org' },
-
-    lede:
-      'Mediatiz runs a media literacy programme at national scale: a learning platform and an Android app used by hundreds of thousands of students and teachers. I owned the AWS infrastructure underneath it, the release pipelines that shipped to it, and the reporting that ran on top.',
-    meta: [
-      { label: 'Role', value: 'DevOps Engineer' },
-      { label: 'Timeline', value: 'Oct 2025 to Apr 2026' },
-      { label: 'Scale', value: '1M+ users, 20K to 30K concurrent' },
-      { label: 'Live', value: 'mediatiz.org', href: 'https://mediatiz.org' },
-    ],
-    problem: {
-      heading: 'A bill sized for the peak, paid at every hour of the day',
-      paras: [
-        'The platform had to survive classroom-hour spikes of twenty to thirty thousand concurrent requests, so everything had been provisioned for the spike and left there. Outside those hours the same capacity sat idle and still billed.',
-        'Separately, an AI tutor feature was planned on a third party LLM API. That meant a per-token bill that scaled with student numbers, and student questions leaving the country, which the programme could not accept.',
-      ],
-    },
-    diagram: 'mediatiz',
-    approach: {
-      heading: 'Follow the actual load, and bring the model in house',
-      paras: [
-        'I put the scaling decisions on real signals: CloudWatch driven auto-scaling, ECS task definitions tuned to what the containers actually used rather than what had been guessed, and workload-aware right-sizing across staging and production. Thirty percent of the bill came off, and uptime stayed at 99.9%.',
-        'For the tutor I built PyBot instead: Django in front of Ollama running Gemma 2B on self-hosted infrastructure. No external API bill, and student data never leaves the estate.',
-        'I also built the release pipelines for four codebases at once, an Android app, a Laravel LMS, a Django service and a Next.js admin dashboard, with zero-downtime ECS rollouts, Slack deploy alerts and Play Console automation. Cross-departmental reporting moved onto a serverless Lambda, API Gateway, EventBridge and S3 path that replaced a manual workflow for eight departments.',
-        'And I ran the security testing in house against staging, brute force, SQL injection and CSRF, with SQLMap and SonarQube, then handed the development team a remediation report they adopted.',
-      ],
-    },
-    results: {
-      heading: 'Measured over the engagement',
-      rows: [
-        { measure: 'AWS monthly spend', before: 'baseline', after: '30% lower', change: 'same workload' },
-        { measure: 'Uptime at peak load', before: 'n/a', after: '99.9%', change: 'sustained' },
-        { measure: 'External LLM API cost', before: 'per token', after: 'zero', change: 'self hosted Gemma 2B' },
-        { measure: 'Departments on manual reporting', before: '8', after: '0', change: 'serverless pipeline' },
-      ],
-    },
-  },
-
-  {
-    slug: 'firefly-migration',
-    index: '05',
-    kicker: 'Migration',
-    title: 'Firefly.online, off the cloud',
-    summary:
-      'Moved an IoT SaaS platform off AWS onto self managed bare metal with a blue green cutover. PostgreSQL, Redis persistence and object storage all migrated while customers stayed online.',
-    metric: { value: '~60%', note: 'lower infrastructure spend afterwards' },
-    tags: ['Zero downtime', 'Blue / green'],
-    stack: ['PostgreSQL', 'Redis', 'Nginx', 'Grafana', 'Prometheus', 'Spring Boot'],
-
-    lede:
-      'Firefly.online is an IoT SaaS platform built on Node.js, React and PostgreSQL. It ran entirely on AWS managed services. I led the move to self-managed bare metal, end to end, without taking the product offline.',
-    meta: [
-      { label: 'Role', value: 'DevOps Engineer, migration lead' },
-      { label: 'Timeline', value: 'Dec 2023 to Oct 2025' },
-      { label: 'Downtime', value: 'None, customer facing' },
-      { label: 'Outcome', value: '~60% lower spend' },
-    ],
-    problem: {
-      heading: 'Every managed service was a line item and a dependency',
-      paras: [
-        'EC2, ECS, RDS, ALB, S3, CloudFront, Lambda and Redis. Convenient, and expensive at the platform’s size, with limited control over placement and tuning. The business wanted the spend down and the control back.',
-        'The constraint was that customers were live on it. A migration that needed a maintenance window long enough to move a production PostgreSQL database and its object storage was not acceptable.',
-      ],
-    },
-    diagram: 'firefly',
-    approach: {
-      heading: 'Stand the new one up, prove it, then move the traffic',
-      paras: [
-        'Every managed service got a self-hosted equivalent provisioned and running in parallel: PostgreSQL for RDS, nginx for the load balancer, self-hosted object storage for S3, Redis on our own hardware. The new stack ran alongside the old one until it was demonstrably correct.',
-        'The cutover was blue green: data migrated with replication catching up to the live database, then traffic switched. PostgreSQL, Redis persistence and object storage all moved with no customer-facing downtime, and infrastructure spend fell by roughly sixty percent.',
-        'The platform was simultaneously moving from Node.js to Java Spring Boot, so I designed and provisioned the development, staging and production environments for the new stack: Ubuntu hosts with Java, Maven, Docker, PostgreSQL, Redis, Apache Kafka and nginx upstream load balancing across multiple backend instances.',
-        'Then I made it observable and hardened it: Grafana, Prometheus, Loki and Node Exporter for metrics, centralised logging and alerting, with Let’s Encrypt, UFW, Fail2ban and SSH key restrictions across every environment. GitHub Actions and SonarQube handled code quality gates, image builds and per-environment deploys.',
-      ],
-    },
-    results: {
-      heading: 'What the move produced',
-      rows: [
-        { measure: 'Infrastructure spend', before: 'baseline', after: '~60% lower', change: 'same platform' },
-        { measure: 'Customer facing downtime', before: 'n/a', after: 'zero', change: 'blue green cutover' },
-        { measure: 'AWS managed services replaced', before: '8', after: '0', change: 'all self hosted' },
-        { measure: 'Environments rebuilt', before: 'ad hoc', after: '3', change: 'dev, staging, prod' },
-      ],
-    },
-  },
 
   {
     slug: 'k8s-gitops',
     index: '06',
     kicker: 'Kubernetes · GitOps',
     title: 'GitOps platform',
+    status: 'Open source reference build',
     summary:
       'ArgoCD App of Apps over Helm charts with per environment values, drift detection every three minutes and self healing. CI tags each image by commit SHA and writes the override back, so services roll independently.',
     metric: { value: '10', note: 'services across three environments, fully declarative' },
-    tags: ['Open source', 'Polyglot, 4 languages'],
+    tags: ['Polyglot, 4 languages', 'Self healing drift'],
     stack: ['Kubernetes', 'ArgoCD', 'Helm', 'Terraform', 'Prometheus', 'External Secrets'],
     repo: { label: 'AbadNaseer/k8s-gitops-argocd', href: 'https://github.com/AbadNaseer/k8s-gitops-argocd' },
 
@@ -359,6 +371,7 @@ export const work: Work[] = [
       ],
     },
   },
+
 ];
 
 export const getWork = (slug: string) => work.find((w) => w.slug === slug);

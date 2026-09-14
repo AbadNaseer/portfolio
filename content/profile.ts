@@ -26,7 +26,10 @@ export const profile = {
   ],
 
   contactHeadline:
-    'Have infrastructure that needs building, or a product that needs to reach production?',
+    'Have a platform that costs too much, breaks too often, or needs an AI layer that actually reaches production?',
+
+  availability:
+    'Open to contract and full-time work. I usually reply within a few hours.',
 
   links: {
     email: 'abad.naseerfast@gmail.com',

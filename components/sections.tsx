@@ -157,6 +157,10 @@ export function Contact() {
               <Mail className="h-4 w-4 shrink-0" />
               {profile.links.email}
             </a>
+            <p className="flex items-center gap-2.5 text-[14px] text-dim">
+              <span aria-hidden="true" className="h-[7px] w-[7px] shrink-0 rounded-full bg-accent" />
+              {profile.availability}
+            </p>
           </div>
 
           <div className="flex shrink-0 flex-col gap-2.5">

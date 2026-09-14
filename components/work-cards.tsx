@@ -33,6 +33,26 @@ function Tags({ items, accent }: { items: string[]; accent?: boolean }) {
   );
 }
 
+/** Provenance line. Says whether a visitor is looking at a shipped system or a
+ *  reference build, and surfaces the live host before anyone has to click. */
+function Status({ item }: { item: Work }) {
+  if (!item.status) return null;
+  return (
+    <div className="-mt-2 flex flex-wrap items-center gap-2 text-[13px]">
+      <span aria-hidden="true" className="h-[6px] w-[6px] shrink-0 rounded-full bg-accent" />
+      <span className="text-ink">{item.status}</span>
+      {item.live && (
+        <>
+          <span aria-hidden="true" className="text-faint">
+            ·
+          </span>
+          <span className="font-mono text-[12.5px] text-dim">{item.live.label}</span>
+        </>
+      )}
+    </div>
+  );
+}
+
 function ReadLink({ slug }: { slug: string }) {
   return (
     <span className="mt-0.5 flex items-center gap-2 text-[14.5px] font-medium text-accent">
@@ -55,14 +75,17 @@ export function FeaturedCard({ item }: { item: Work }) {
   return (
     <Link
       href={`/work/${item.slug}`}
-      className="focusable group card grid grid-cols-1 overflow-hidden transition-colors hover:border-edge lg:grid-cols-2"
+      className={`focusable group card grid grid-cols-1 overflow-hidden transition-colors hover:border-edge ${
+        item.shot ? 'lg:grid-cols-2' : ''
+      }`}
     >
       <div className="flex flex-col gap-[18px] p-7 sm:p-8">
         <CardHead index={item.index} kicker={item.kicker} />
         <h3 className="h-display text-[25px] sm:text-[28px]">{item.title}</h3>
-        <p className="text-[14.8px] leading-[1.65] text-muted">{item.summary}</p>
+        <Status item={item} />
+        <p className="max-w-[62ch] text-[14.8px] leading-[1.65] text-muted">{item.summary}</p>
         <Tags items={item.tags} accent />
-        <Metric value={item.metric.value} note={item.metric.note} />
+        {item.metric && <Metric value={item.metric.value} note={item.metric.note} />}
         <ul className="flex flex-wrap gap-[7px]">
           {item.stack.map((s) => (
             <li key={s} className="chip">
@@ -96,9 +119,10 @@ export function WorkCard({ item }: { item: Work }) {
     >
       <CardHead index={item.index} kicker={item.kicker} />
       <h3 className="h-display text-[22px] sm:text-[25px]">{item.title}</h3>
+      <Status item={item} />
       <p className="flex-grow text-[14.8px] leading-[1.65] text-muted">{item.summary}</p>
       <Tags items={item.tags} />
-      <Metric value={item.metric.value} note={item.metric.note} />
+      {item.metric && <Metric value={item.metric.value} note={item.metric.note} />}
       <ul className="flex flex-wrap gap-[7px]">
         {item.stack.slice(0, 5).map((s) => (
           <li key={s} className="chip">

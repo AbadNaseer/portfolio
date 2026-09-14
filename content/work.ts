@@ -126,9 +126,46 @@ export const work: Work[] = [
     },
   },
 
+  // TODO(abad): metric.value is a placeholder. Fill in one measured number before
+  // this ships: tokens/sec at a given batch size, cold-start time for a model, or
+  // GPU utilisation before and after. Everything else here is already accurate.
+  {
+    slug: 'servescale',
+    index: '02',
+    kicker: 'AI infrastructure',
+    title: 'ServeScale',
+    summary:
+      'A Kubernetes native platform for running language models on GPU. Deploy a model, let it scale, watch it, and benchmark it, without anyone on the product team having to operate an inference server.',
+    metric: { value: 'TODO', note: 'placeholder, see the note above this entry' },
+    tags: ['vLLM', 'GPU', 'Kubernetes'],
+    stack: ['Kubernetes', 'vLLM', 'Python', 'GPU', 'Helm', 'Prometheus'],
+
+    lede:
+      'Serving a language model in production is a different job from choosing one. ServeScale is the layer that makes the second job someone else\'s problem: models go up, scale with demand, and report on themselves.',
+    meta: [
+      { label: 'Role', value: 'Platform and inference infrastructure' },
+      { label: 'Timeline', value: '2026, ongoing' },
+      { label: 'Runtime', value: 'vLLM on GPU nodes' },
+    ],
+    problem: {
+      heading: 'Everybody wants to ship a model, nobody wants to run one',
+      paras: [
+        'A model that works in a notebook is not a service. It needs a GPU node that is the right size, a runtime that batches requests properly, somewhere for the weights to live so a restart is not a download, and autoscaling that reacts to real traffic rather than to CPU.',
+        'Product teams end up either overprovisioning a GPU that sits idle most of the day, or hand rolling a serving stack that only one person understands. Neither survives contact with a second model.',
+      ],
+    },
+    approach: {
+      heading: 'One platform, many models',
+      paras: [
+        'vLLM does the serving, so continuous batching and paged attention come for free rather than being reinvented. Kubernetes does the scheduling, which means GPU nodes are a pool rather than a pet, and a model is a workload like any other.',
+        'On top of that sits the part teams actually touch: deploy a model, scale it, see its metrics, and benchmark one against another under the same load before committing to it. The comparison is the point. Choosing a model on published numbers rather than your own traffic is how you end up paying for capacity you do not need.',
+      ],
+    },
+  },
+
   {
     slug: 'nextlab',
-    index: '02',
+    index: '03',
     kicker: 'Multi-tenant SaaS',
     title: 'NextLab',
     summary:
@@ -181,7 +218,7 @@ export const work: Work[] = [
 
   {
     slug: 'mediatiz',
-    index: '03',
+    index: '04',
     kicker: 'Cloud cost · reliability',
     title: 'Mediatiz Foundation',
     summary:
@@ -229,7 +266,7 @@ export const work: Work[] = [
 
   {
     slug: 'firefly-migration',
-    index: '04',
+    index: '05',
     kicker: 'Migration',
     title: 'Firefly.online, off the cloud',
     summary:
@@ -276,7 +313,7 @@ export const work: Work[] = [
 
   {
     slug: 'k8s-gitops',
-    index: '05',
+    index: '06',
     kicker: 'Kubernetes · GitOps',
     title: 'GitOps platform',
     summary:

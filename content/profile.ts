@@ -14,9 +14,9 @@ export const profile = {
     'I build the infrastructure behind cloud platforms, and the AI products that run on top of it.',
 
   intro:
-    'Most people do one or the other. I do both: the AWS and Kubernetes underneath, and the retrieval systems, voice pipelines and APIs on top. Currently Platform Engineer at Ccript, on GCP and observability.',
+    'Most people do one or the other. I do both: the AWS and Kubernetes underneath, and the Python services, retrieval systems and voice pipelines on top. Currently Platform Engineer at Ccript, building GPU inference infrastructure and rebuilding a franchise reporting platform on GCP.',
 
-  stack: ['AWS', 'GCP', 'Kubernetes', 'Terraform', 'ArgoCD', 'Prometheus', 'FastAPI', 'RAG / LLM'],
+  stack: ['AWS', 'GCP', 'Kubernetes', 'Terraform', 'Python', 'FastAPI', 'Prometheus', 'RAG / LLM'],
 
   metrics: [
     { value: '30%', label: 'AWS spend removed', note: 'Autoscaling and ECS right-sizing, at 1M+ users' },
@@ -32,9 +32,7 @@ export const profile = {
     email: 'abad.naseerfast@gmail.com',
     github: 'https://github.com/AbadNaseer',
     linkedin: 'https://linkedin.com/in/abadnaseer',
-    // Left empty deliberately: I do not have your real Upwork profile URL and will
-    // not guess one. Paste it here and it appears in the nav, contact block and footer.
-    upwork: '',
+    upwork: 'https://www.upwork.com/freelancers/~014f1d563a353a0012',
     resume: '/Abad_Naseer_Resume.pdf',
   },
 } as const;

@@ -12,7 +12,7 @@ export const roles: Role[] = [
     title: 'Platform Engineer, GCP & Observability',
     org: 'Ccript Agency',
     blurb:
-      'Production data pipeline investigation across BigQuery, Cloud Storage and dbt. GCP native monitoring and logging, operational runbooks, and SLA resources for the support teams.',
+      'Built ServeScale, a Kubernetes native platform for deploying, scaling, monitoring and benchmarking LLMs on GPU with vLLM. Migrated a multi brand franchise reporting platform off a third party dashboard onto a native presentation layer, then repaired the KPI accuracy, filtering, location mappings and BigQuery reconciliation underneath it. GCP native monitoring, logging and operational runbooks.',
     current: true,
   },
   {

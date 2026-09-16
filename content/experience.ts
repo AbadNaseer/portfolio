@@ -9,7 +9,7 @@ export type Role = {
 export const roles: Role[] = [
   {
     period: 'Jun 2026 — now',
-    title: 'Platform Engineer, GCP & Observability',
+    title: 'Platform Engineer, AI Infrastructure',
     org: 'Ccript Agency',
     blurb:
       'Built a Kubernetes native platform for deploying, scaling, monitoring and benchmarking LLMs on GPU with vLLM. Migrated a multi brand franchise reporting platform off a third party dashboard onto a native presentation layer, then repaired the KPI accuracy, filtering, location mappings and BigQuery reconciliation underneath it. GCP native monitoring, logging and operational runbooks.',
@@ -28,6 +28,13 @@ export const roles: Role[] = [
     org: 'Poshmaal Technologies',
     blurb:
       'Led the AWS to on premises migration of an IoT SaaS platform, then rebuilt its dev, staging and production environments with full stack observability and a K3s GitOps cluster for ERP workloads.',
+  },
+  {
+    period: 'Dec 2021 — Nov 2023',
+    title: 'DevOps Consultant, freelance',
+    org: 'Fiverr & Upwork',
+    blurb:
+      'Twenty plus containerisation, CI/CD and server infrastructure projects for small business clients. Docker deployments, GitHub Actions, nginx and Certbot, Ansible for repeatable provisioning, and self hosted Kubernetes with Ingress, HPA and RBAC where it was warranted.',
   },
 ];
 

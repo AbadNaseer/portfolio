@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { profile } from '@/content/profile';
-import { roles, credentials, skills } from '@/content/experience';
+import { roles, credentials } from '@/content/experience';
+import { findings } from '@/content/findings';
 import { LinkedIn, Upwork, Download, Mail } from './icons';
 
 export function SectionHead({
@@ -59,20 +60,40 @@ export function Experience() {
         ))}
       </ul>
 
-      <div className="mt-12 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
-        {skills.map((s) => (
-          <div key={s.group} className="flex flex-col gap-3 bg-panel p-6">
-            <h3 className="sec-label">{s.group}</h3>
-            <ul className="flex flex-col gap-1.5">
-              {s.items.map((i) => (
-                <li key={i} className="text-[13.5px] leading-[1.5] text-muted">
-                  {i}
-                </li>
-              ))}
-            </ul>
-          </div>
+    </section>
+  );
+}
+
+export function Findings() {
+  return (
+    <section id="debugging" className="shell scroll-mt-20 py-14 sm:py-16">
+      <SectionHead
+        label="Debugging"
+        title="Things that were not what they looked like"
+        aside={
+          <p className="max-w-[330px] text-[14.5px] leading-[1.6] text-dim sm:text-right">
+            The symptom is never the cause. These are real, and the second column is
+            what it actually was.
+          </p>
+        }
+      />
+
+      <ol className="flex flex-col">
+        {findings.map((f, i) => (
+          <li
+            key={f.symptom}
+            className={`grid grid-cols-1 gap-3 border-t border-line py-6 sm:grid-cols-[1fr_1.25fr] sm:gap-10 ${
+              i === findings.length - 1 ? 'border-b' : ''
+            }`}
+          >
+            <div className="flex flex-col gap-2">
+              <p className="text-[15px] leading-[1.6] text-ink">{f.symptom}</p>
+              <span className="sec-label">{f.where}</span>
+            </div>
+            <p className="max-w-[640px] text-[14.5px] leading-[1.7] text-muted">{f.cause}</p>
+          </li>
         ))}
-      </div>
+      </ol>
     </section>
   );
 }

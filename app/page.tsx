@@ -1,7 +1,7 @@
 import { Nav } from '@/components/nav';
 import { Hero } from '@/components/hero';
 import { FeaturedCard, WorkCard } from '@/components/work-cards';
-import { Experience, Contact, Footer, SectionHead } from '@/components/sections';
+import { Findings, Experience, Contact, Footer, SectionHead } from '@/components/sections';
 import { work } from '@/content/work';
 
 export default function Home() {
@@ -38,6 +38,7 @@ export default function Home() {
           </div>
         </section>
 
+        <Findings />
         <Experience />
         <Contact />
       </main>

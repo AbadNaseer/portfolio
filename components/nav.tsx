@@ -4,6 +4,7 @@ import { ArrowLeft, Download } from './icons';
 
 const sections = [
   { label: 'Work', href: '/#work' },
+  { label: 'Debugging', href: '/#debugging' },
   { label: 'Experience', href: '/#experience' },
   { label: 'Contact', href: '/#contact' },
 ];

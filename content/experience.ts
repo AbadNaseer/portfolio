@@ -12,7 +12,7 @@ export const roles: Role[] = [
     title: 'Platform Engineer, AI Infrastructure',
     org: 'Ccript Agency',
     blurb:
-      'Built a Kubernetes native platform for deploying, scaling, monitoring and benchmarking LLMs on GPU with vLLM. Migrated a multi brand franchise reporting platform off a third party dashboard onto a native presentation layer, then repaired the KPI accuracy, filtering, location mappings and BigQuery reconciliation underneath it. GCP native monitoring, logging and operational runbooks.',
+      'End to end product engineering on a Kubernetes native AI inference platform: product requirements into architecture, a K3s control plane provisioned in OpenTofu with remote state, rented GPU capacity joined on demand, vLLM behind AIBrix and Envoy Gateway, and a Prometheus and Grafana layer with the benchmarks to argue about it. Separately, migrated a multi brand franchise reporting platform off a third party dashboard onto native reporting, then repaired the pipelines, KPI accuracy and BigQuery reconciliation underneath it.',
     current: true,
   },
   {

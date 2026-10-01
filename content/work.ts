@@ -37,6 +37,8 @@ export type Work = {
   approach: { heading: string; paras: string[] };
   results?: { heading: string; rows: ResultRow[]; footnote?: string };
   agents?: { heading: string; blurb: string; items: Agent[] };
+  /** Like agents, but for parts of one system rather than shipped products, so no link. */
+  layers?: { heading: string; blurb: string; items: { name: string; blurb: string; chips: string[] }[] };
   diagram?: 'smartzees' | 'mediatiz' | 'firefly' | 'gitops' | 'nextlab' | 'inference';
   live?: { label: string; href: string };
 };
@@ -50,35 +52,68 @@ export const work: Work[] = [
     title: 'GPU inference platform',
     status: 'Production platform',
     summary:
-      'The layer between a chosen model and a served one. Models deploy onto pooled GPU nodes, scale with real demand, report on themselves, and can be benchmarked against each other under the same load before anyone commits capacity to one.',
-    tags: ['vLLM runtime', 'GPU autoscaling'],
-    stack: ['Kubernetes', 'vLLM', 'Python', 'GPU', 'Helm', 'Prometheus'],
+      'A Kubernetes-native platform for serving language models on GPU. Not one layer of it: the cloud underneath provisioned as code, the cluster that schedules the cards, the inference engine and gateway that answer requests, and the measurement layer that says whether any of it is worth the money.',
+    tags: ['vLLM + AIBrix', 'GPU scheduling'],
+    stack: ['Kubernetes', 'K3s', 'vLLM', 'OpenTofu', 'Ansible', 'Prometheus'],
     featured: true,
 
     lede:
-      'Serving a language model in production is a different job from choosing one. This is the layer that makes the second job someone else\'s problem: models go up, scale with demand, and report on themselves.',
+      'Serving a language model in production is a different job from choosing one. This is the layer that makes the second job someone else\'s problem: models go up, scale with demand, report on themselves, and can be measured against each other before anyone commits capacity.',
     meta: [
-      { label: 'Role', value: 'Platform and inference infrastructure' },
+      { label: 'Role', value: 'End-to-end product and platform engineering' },
       { label: 'Timeline', value: '2026, ongoing' },
-      { label: 'Runtime', value: 'vLLM on GPU nodes' },
+      { label: 'Engine', value: 'vLLM behind AIBrix and Envoy Gateway' },
+      { label: 'Control plane', value: 'K3s on Hetzner, GPU capacity rented per run' },
     ],
-    diagram: 'inference',
     problem: {
       heading: 'Everybody wants to ship a model, nobody wants to run one',
       paras: [
-        'A model that works in a notebook is not a service. It needs a GPU node that is the right size, a runtime that batches requests properly, somewhere for the weights to live so a restart is not a download, and autoscaling that reacts to real traffic rather than to CPU.',
-        'Product teams end up either overprovisioning a GPU that sits idle most of the day, or hand rolling a serving stack that only one person understands. Neither survives contact with a second model.',
+        'A model that works in a notebook is not a service. It needs a card of the right size, a runtime that batches requests properly, weights that live somewhere so a restart is not a download, routing that can hold a conversation on one replica, and scheduling that treats GPUs as a pool rather than as named machines.',
+        'Product teams end up either overprovisioning a card that idles most of the day, or hand-rolling a serving stack only one person understands. Neither survives the second model. And almost nobody can answer the question that decides the bill: for this model, on this hardware, under our traffic, what does a request actually cost in time and capacity?',
       ],
     },
+    layers: {
+      heading: 'Four layers, built and operated together',
+      blurb:
+        'The work is end to end rather than a single tier. Product requirements become architecture, architecture becomes infrastructure as code, and the whole thing has to report on itself well enough to be argued about.',
+      items: [
+        {
+          name: 'Cloud and infrastructure as code',
+          blurb:
+            'Control-plane provisioning on Hetzner through OpenTofu, with remote S3 state, locking, and a recovery path for when state and reality disagree. GPU capacity comes from an external provider and is joined to the cluster on demand, so the expensive part exists only while it is earning.',
+          chips: ['OpenTofu', 'Hetzner', 'Remote state'],
+        },
+        {
+          name: 'Kubernetes platform',
+          blurb:
+            'A control-plane and inference-engine split, node lifecycle, workload placement and GPU scheduling, with ephemeral capacity that joins, serves and leaves. Ansible and shell tooling carry provisioning, engine setup, verification, scale-out and teardown so none of it is done by hand.',
+          chips: ['K3s', 'Ansible', 'Device plugin'],
+        },
+        {
+          name: 'Inference serving',
+          blurb:
+            'vLLM as the engine, with AIBrix and Envoy Gateway in front for routing and multi-replica serving. Deployed and validated Granite 4.2 8B end to end, which meant working through the model, image and tokenizer lifecycle, GPU readiness, cold-start time and engine initialisation rather than assuming a running pod meant a working model.',
+          chips: ['vLLM', 'AIBrix', 'Envoy Gateway'],
+        },
+        {
+          name: 'Measurement and observability',
+          blurb:
+            'A Prometheus and Grafana layer covering request performance, gateway and routing behaviour, replica counts, GPU utilisation, cache behaviour, engine readiness and infrastructure health. On top of it, controlled benchmarks and continuous load to characterise latency, throughput, concurrency and what actually happens during scale-out.',
+          chips: ['Prometheus', 'Grafana', 'Load testing'],
+        },
+      ],
+    },
+    diagram: 'inference',
     approach: {
-      heading: 'One platform, many models',
+      heading: 'The interesting part is what breaks',
       paras: [
-        'vLLM does the serving, so continuous batching and paged attention come for free rather than being reinvented. Kubernetes does the scheduling, which means GPU nodes are a pool rather than a pet, and a model is a workload like any other.',
-        'On top of that sits the part teams actually touch: deploy a model, scale it, see its metrics, and benchmark one against another under the same load before committing to it. The comparison is the point. Choosing a model on published numbers rather than your own traffic is how you end up paying for capacity you do not need.',
+        'Most of the engineering time has not gone on the happy path. It has gone on the gap between a component reporting healthy and the system actually working: a node that became schedulable before its GPU was claimable, verification logic that held the card it was checking, firewall state that outlived the machine it belonged to, and infrastructure state drifting away from what was really running.',
+        'The method is to break it deliberately. Destroy and recreate GPU workers, then ask whether everything came back without a human. That is how those faults surfaced, and it is why the automation covers teardown as carefully as it covers provisioning.',
+        'The roadmap runs from evaluation infrastructure toward something production-shaped: session affinity so a conversation stays on one replica, continuous load rather than one-shot tests, component-level observability, local model artifacts and a private registry so a cold start is not a download from the internet, and isolated per-engineer environments.',
+        'Alongside the building, the ordinary discipline that makes a platform other people can own: technical investigation, implementation plans, issues and pull requests, review, evidence collected for each change, and documentation written for whoever picks it up next.',
       ],
     },
   },
-
 
   {
     slug: 'smartzees',

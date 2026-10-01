@@ -174,6 +174,36 @@ export default function CaseStudy({ params }: { params: { slug: string } }) {
           </div>
         )}
 
+        {item.layers && (
+          <div className="pb-14">
+            <div className="shell grid grid-cols-1 gap-6 pb-8 sm:gap-14 lg:grid-cols-[260px_1fr]">
+              <span className="sec-label lg:pt-2">What it is made of</span>
+              <div className="flex max-w-[780px] flex-col gap-4">
+                <H2>{item.layers.heading}</H2>
+                <p className="prose-body">{item.layers.blurb}</p>
+              </div>
+            </div>
+            <ul className="shell grid grid-cols-1 gap-[18px] md:grid-cols-2">
+              {item.layers.items.map((l) => (
+                <li key={l.name} className="card flex flex-col gap-3.5 p-[26px]">
+                  <div className="flex items-center justify-between gap-3">
+                    <h3 className="font-display text-[19px] font-medium text-ink">{l.name}</h3>
+                    <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-accent" />
+                  </div>
+                  <p className="flex-grow text-[14.5px] leading-[1.65] text-muted">{l.blurb}</p>
+                  <ul className="flex flex-wrap gap-[7px]">
+                    {l.chips.map((c) => (
+                      <li key={c} className="chip">
+                        {c}
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {/* Architecture */}
         {Diagram && (
           <Row label="Architecture">

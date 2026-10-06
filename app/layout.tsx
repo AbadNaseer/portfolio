@@ -13,7 +13,10 @@ import './globals.css';
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
-  weight: ['400', '600'],
+  // 400 only. Weight 600 was used by a single counter in the simulation and
+  // cost a whole set of unicode-range subsets. Italic stays: it is the one
+  // device that marks a cause in the faults table.
+  weight: ['400'],
   style: ['normal', 'italic'],
   variable: '--font-serif',
   display: 'swap',

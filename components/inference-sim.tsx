@@ -325,7 +325,7 @@ export function InferenceSim() {
         ].map((m) => (
           <div key={m.k} className="flex flex-col gap-1 bg-sunk px-4 py-3">
             <dt className="label">{m.k}</dt>
-            <dd className="font-serif text-lg font-semibold tracking-[-0.02em] text-ink">{m.v}</dd>
+            <dd className="font-serif text-lg font-normal tracking-[-0.02em] text-ink">{m.v}</dd>
           </div>
         ))}
       </dl>

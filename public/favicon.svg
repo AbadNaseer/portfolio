@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-server">
-  <rect width="20" height="8" x="2" y="2" rx="2" ry="2"></rect>
-  <rect width="20" height="8" x="2" y="14" rx="2" ry="2"></rect>
-  <line x1="6" x2="6.01" y1="6" y2="6"></line>
-  <line x1="6" x2="6.01" y1="18" y2="18"></line>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Abad Naseer">
+  <rect width="32" height="32" fill="#FBFAF7"/>
+  <rect x="5" y="5" width="22" height="2.5" fill="#A8321C"/>
+  <text x="16" y="25" text-anchor="middle"
+        font-family="Source Serif 4, Georgia, 'Times New Roman', serif"
+        font-size="17" fill="#16171B">AN</text>
 </svg>

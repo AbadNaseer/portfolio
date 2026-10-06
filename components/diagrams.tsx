@@ -1,21 +1,26 @@
 import { InferenceSim } from './inference-sim';
 
 /**
- * Inline SVG architecture diagrams, one per case study.
- * Palette is fixed to the site tokens so they read the same everywhere:
- * box #151719 / edge #2A2D34 / ink #F2F1EC / dim #6B6E76 / accent #C7F04B.
+ * Inline SVG architecture diagrams, one per case study, drawn as numbered
+ * figures in the document.
+ *
+ * Every colour is a CSS custom property rather than a literal, so the palette
+ * lives in exactly one file. The dark design needed nine values here, four of
+ * them only to make an acid accent survivable on near-black; on paper a
+ * diagram is ink on a tint with one red callout, so three of those are now
+ * aliases and could be collapsed further.
  */
 
 const C = {
-  box: '#151719',
-  edge: '#2A2D34',
-  ink: '#F2F1EC',
-  dim: '#6B6E76',
-  faint: '#4E5158',
-  accent: '#C7F04B',
-  accentBox: '#12160D',
-  accentEdge: '#3D4A22',
-  accentDim: '#8A9463',
+  box: 'var(--paper-sunk)',
+  edge: 'var(--rule)',
+  ink: 'var(--ink)',
+  dim: 'var(--ink-2)',
+  faint: 'var(--ink-3)',
+  accent: 'var(--mark)',
+  accentBox: 'var(--mark-wash)',
+  accentEdge: 'var(--mark)',
+  accentDim: 'var(--ink-2)',
 };
 
 function Defs({ id }: { id: string }) {
@@ -30,8 +35,8 @@ function Defs({ id }: { id: string }) {
 
 function Frame({ children, viewBox }: { children: React.ReactNode; viewBox: string }) {
   return (
-    <div className="card bg-panel p-6 sm:p-8">
-      <div className="overflow-x-auto">
+    <div className="border border-rule bg-sunk p-5 sm:p-7">
+      <div className="overflow-x-auto" tabIndex={0} role="group" aria-label="Architecture diagram, scrollable">
         <svg
           viewBox={viewBox}
           className="block h-auto w-full min-w-[620px]"

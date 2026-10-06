@@ -1,47 +1,88 @@
+@import './tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
+/*  A technical memorandum, not a landing page.
+ *
+ *  Paper ground, one serif, one mono, one oxide red. Every near-black
+ *  engineer portfolio this audience sees looks the same; this one is an
+ *  object with something written on it. The restraint is the design. */
 
-html { scroll-behavior: smooth; }
+html {
+  background: var(--paper);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
 
 body {
-  background: #0A0B0D;
-  color: #F2F1EC;
+  background: var(--paper);
+  color: var(--ink);
+  font-feature-settings: 'kern' 1;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* The site is a committed single-look design: near-black ground, one acid accent.
-   It is not theme-reactive, so both grounds are painted explicitly above. */
+/* Every figure, table cell and metric aligns on the decimal. Off by default,
+   which is why the old results columns never lined up. */
+table, .tnum { font-variant-numeric: tabular-nums; }
+
+::selection { background: var(--mark); color: var(--paper); }
 
 @layer components {
-  .shell { @apply mx-auto w-full max-w-shell px-6 sm:px-8 lg:px-10; }
+  .shell { @apply mx-auto w-full max-w-shell px-5 sm:px-8 lg:px-10; }
 
-  .sec-label {
-    @apply font-mono text-[11px] sm:text-xs uppercase tracking-[0.16em] text-dim;
+  /* A mono label in small caps spacing. Used for document furniture: section
+     numbers, running heads, column headings. */
+  .label {
+    @apply font-mono text-2xs uppercase text-ink-3;
   }
 
-  .chip {
-    @apply font-mono text-[11.5px] text-muted border border-[#24262C] rounded-full px-[11px] py-[5px];
-  }
-
-  .card {
-    @apply bg-raised border border-line rounded-2xl;
-  }
-
-  .h-display {
-    @apply font-display font-medium tracking-[-0.025em] text-ink;
+  /* Display type is serif at 400. At 600 it reads as a newspaper; at 400 it
+     reads as authored, which is the whole point. */
+  .display {
+    font-family: var(--font-serif), 'Source Serif 4', Georgia, serif;
+    @apply font-normal text-ink;
   }
 
   .prose-body {
-    @apply text-[16px] sm:text-[16.5px] leading-[1.75] text-muted;
+    @apply font-serif text-base text-ink-2 max-w-measure;
   }
 
   .focusable {
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-ground rounded-sm;
+    @apply outline-none focus-visible:outline focus-visible:outline-2
+           focus-visible:outline-offset-2 focus-visible:outline-mark;
+  }
+
+  /* Leader dots for the contents page. A flexing rule between a label and a
+     right-aligned value, which is how a table of contents has worked since
+     before the web. */
+  .leader {
+    @apply flex-1 self-end border-b border-dotted border-rule;
+    margin-bottom: 0.32em;
   }
 }
 
-::selection { background: #C7F04B; color: #0A0B0D; }
+/*  Reveal on scroll. The resting state is .001 rather than 0 so the text is
+ *  always present for find-in-page and assistive tech even if the script
+ *  never runs, and the whole rule set is inside a reduced-motion guard so
+ *  that path has no hidden state at all. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal] {
+    opacity: 0.001;
+    transform: translateY(12px);
+    transition: opacity var(--dur-slow) var(--ease-out),
+                transform var(--dur-slow) var(--ease-out);
+  }
+  [data-reveal].is-in { opacity: 1; transform: none; }
+
+  .settle { animation: settle var(--dur-slow) var(--ease-out) both; animation-delay: var(--d, 0ms); }
+  @keyframes settle {
+    from { opacity: 0.001; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+}

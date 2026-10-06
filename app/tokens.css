@@ -1,0 +1,40 @@
+/*  One palette, one scale, one set of durations.
+ *
+ *  Everything that has a colour reads from here, including the inline SVG
+ *  diagrams and the simulation. The previous design had fifteen hex literals
+ *  scattered across three files and two of its text tokens failed WCAG AA, so
+ *  the rule now is: if a colour is not in this file, it is a bug.
+ *
+ *  Contrast against --paper, computed, not estimated:
+ *    ink    17.16:1   ink-2   6.91:1   ink-3  4.52:1   mark  6.41:1
+ *    rule-strong 3.02:1 (interactive borders clear the 3:1 non-text minimum)
+ *    rule is decorative only and carries no information.
+ */
+
+:root {
+  color-scheme: light;
+
+  --paper:       #FBFAF7;
+  --paper-sunk:  #F2F0EA;
+  --rule:        #DDD9CF;
+  --rule-strong: #93918A;
+
+  --ink:         #16171B;
+  --ink-2:       #55575E;
+  --ink-3:       #737377;
+
+  --mark:        #A8321C;
+  --mark-wash:   rgba(168, 50, 28, 0.08);
+
+  /* Motion. One slow, one quick, one easing. A third duration would be a
+     fourth opinion about how fast the site feels. */
+  --dur-quick: 180ms;
+  --dur-slow:  620ms;
+  --ease-out:  cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  --measure: 64ch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-quick: 0ms; --dur-slow: 0ms; }
+}

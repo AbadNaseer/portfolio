@@ -27,8 +27,10 @@ export type Work = {
   status?: string;
   tags: string[];
   stack: string[];
-  shot?: { src: string; alt: string; chrome: string };
-  featured?: boolean;
+  shot?: { src: string; alt: string; caption: string; w: number; h: number };
+  /** flagship gets its own block, client sit in the index, reference is
+   *  visually separated so the honesty is loud rather than skimmable. */
+  tier: 'flagship' | 'client' | 'reference';
 
   // Case study page
   lede: string;
@@ -49,13 +51,13 @@ export const work: Work[] = [
     slug: 'gpu-inference-platform',
     index: '01',
     kicker: 'AI infrastructure',
+    tier: 'flagship',
     title: 'GPU inference platform',
     status: 'Production platform',
     summary:
       'A Kubernetes-native platform for serving language models on GPU. Not one layer of it: the cloud underneath provisioned as code, the cluster that schedules the cards, the inference engine and gateway that answer requests, and the measurement layer that says whether any of it is worth the money.',
     tags: ['vLLM + AIBrix', 'GPU scheduling'],
     stack: ['Kubernetes', 'K3s', 'vLLM', 'OpenTofu', 'Ansible', 'Prometheus'],
-    featured: true,
 
     lede:
       'Serving a language model in production is a different job from choosing one. This is the layer that makes the second job someone else\'s problem: models go up, scale with demand, report on themselves, and can be measured against each other before anyone commits capacity.',
@@ -119,6 +121,7 @@ export const work: Work[] = [
     slug: 'smartzees',
     index: '02',
     kicker: 'Conversational commerce',
+    tier: 'client',
     title: 'SmartZees',
     status: 'Live in production',
     summary:
@@ -128,10 +131,11 @@ export const work: Work[] = [
     stack: ['FastAPI', 'MySQL', 'pgvector', 'Gemini', 'Next.js', 'AWS'],
     shot: {
       src: '/img/work/smartmarket.webp',
-      alt: 'SmartMarket answering a grocery request with ranked product results',
-      chrome: 'marketz.smartzees.com/chat',
+      alt: 'The assistant answering a grocery request with five ranked products and a trace line reading "Answered without calling a model, 100ms"',
+      caption: 'The assistant ranks real catalogue rows and says how it got there. The trace line is the point: this answer never reached a model.',
+      w: 470,
+      h: 528,
     },
-    featured: true,
     live: { label: 'smartzees.com', href: 'https://smartzees.com' },
 
     lede:
@@ -207,6 +211,7 @@ export const work: Work[] = [
     slug: 'firefly-migration',
     index: '03',
     kicker: 'Migration',
+    tier: 'client',
     title: 'Firefly.online, off the cloud',
     status: 'Live, migration complete',
     summary:
@@ -256,6 +261,7 @@ export const work: Work[] = [
     slug: 'mediatiz',
     index: '04',
     kicker: 'Cloud cost · reliability',
+    tier: 'client',
     title: 'Mediatiz Foundation',
     status: 'Live in production',
     summary:
@@ -306,6 +312,7 @@ export const work: Work[] = [
     slug: 'nextlab',
     index: '05',
     kicker: 'Multi-tenant SaaS',
+    tier: 'client',
     title: 'NextLab',
     status: 'Live commercial product',
     summary:
@@ -313,11 +320,6 @@ export const work: Work[] = [
     metric: { value: '1000+', note: 'active users across paying laboratories' },
     tags: ['Four actor types', 'Billing and commissions'],
     stack: ['Django REST', 'Next.js 14', 'PostgreSQL', 'Docker', 'Celery', 'Redis'],
-    shot: {
-      src: '/img/work/nextlab.webp',
-      alt: 'NextLab laboratory management platform landing page',
-      chrome: 'nextlab.com.pk',
-    },
     live: { label: 'nextlab.com.pk', href: 'https://nextlab.com.pk' },
 
     lede:
@@ -361,6 +363,7 @@ export const work: Work[] = [
     slug: 'k8s-gitops',
     index: '06',
     kicker: 'Kubernetes · GitOps',
+    tier: 'reference',
     title: 'GitOps platform',
     status: 'Reference build, not client work',
     summary:

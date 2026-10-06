@@ -1,310 +1,247 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Nav } from '@/components/nav';
-import { Footer } from '@/components/sections';
+import { Masthead, MobileBar } from '@/components/nav';
+import { Colophon, Footer } from '@/components/doc';
 import { diagrams } from '@/components/diagrams';
-import { ArrowLeft, ArrowRight, ArrowUpRight } from '@/components/icons';
-import { work, getWork } from '@/content/work';
+import { work } from '@/content/work';
 
 export function generateStaticParams() {
   return work.map((w) => ({ slug: w.slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const item = getWork(params.slug);
+  const item = work.find((w) => w.slug === params.slug);
   if (!item) return {};
-  const title = `${item.title} — ${item.kicker}`;
   return {
-    title,
+    title: `${item.title} — ${item.kicker}`,
     description: item.summary,
-    openGraph: { title, description: item.summary, type: 'article' },
-    twitter: { card: 'summary_large_image', title, description: item.summary },
+    openGraph: { title: item.title, description: item.summary, images: ['/og.png'] },
   };
 }
 
-/** A labelled block in the left rail, content on the right. */
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
+/*  One numbered section of the memorandum. A real <section> with a real <h2>,
+ *  so the document outline is the navigation. The old template rendered the
+ *  section label as a <span> in a grid rail, which meant the page had an h1
+ *  and then no headings at all. */
+function Part({
+  n, title, children,
+}: { n: string; title: string; children: React.ReactNode }) {
+  const id = `s${n.replace('.', '-')}`;
   return (
-    <div className="shell grid grid-cols-1 gap-6 pb-14 sm:gap-14 lg:grid-cols-[260px_1fr]">
-      <span className="sec-label lg:pt-2">{label}</span>
-      <div className="flex flex-col gap-5">{children}</div>
+    <section aria-labelledby={id} className="shell border-t border-rule py-12 sm:py-16">
+      <h2 id={id} className="mb-8 flex items-baseline gap-4 sm:mb-10">
+        <span className="label tnum shrink-0">{n}</span>
+        <span className="display text-xl sm:text-2xl">{title}</span>
+      </h2>
+      {children}
+    </section>
+  );
+}
+
+function Paras({ items }: { items: readonly string[] }) {
+  return (
+    <div className="flex flex-col gap-5">
+      {items.map((p) => <p key={p.slice(0, 40)} className="prose-body" data-reveal>{p}</p>)}
     </div>
   );
 }
 
-function H2({ children }: { children: React.ReactNode }) {
-  return <h2 className="h-display text-[24px] sm:text-[30px]">{children}</h2>;
-}
-
 export default function CaseStudy({ params }: { params: { slug: string } }) {
-  const item = getWork(params.slug);
-  if (!item) notFound();
-
-  const idx = work.findIndex((w) => w.slug === item.slug);
+  const idx = work.findIndex((w) => w.slug === params.slug);
+  if (idx === -1) notFound();
+  const item = work[idx];
+  const prev = work[(idx - 1 + work.length) % work.length];
   const next = work[(idx + 1) % work.length];
   const Diagram = item.diagram ? diagrams[item.diagram] : null;
 
+  // Figures are numbered within the case, and the body refers to them.
+  let fig = 0;
+  const figNo = () => `Fig. ${item.index.replace(/^0/, '')}.${++fig}`;
+
   return (
     <>
-      <Nav variant="case" />
-      <main>
-        {/* Title */}
-        <div className="shell flex flex-col gap-6 pb-10 pt-14 sm:pt-16">
-          <div className="flex flex-wrap items-center gap-3.5">
-            <span className="font-mono text-xs text-accent">CASE STUDY {item.index}</span>
-            <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#3A3D44]" />
-            <span className="sec-label">{item.kicker}</span>
-            {item.status && (
-              <>
-                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[#3A3D44]" />
-                <span className="flex items-center gap-2 text-[13px] text-ink">
-                  <span aria-hidden="true" className="h-[6px] w-[6px] rounded-full bg-accent" />
-                  {item.status}
-                </span>
-              </>
-            )}
-          </div>
+      <Masthead caseLabel={`${item.index} · ${item.title}`} />
 
-          {/* The project name. Without it, anyone arriving from a shared link or a
-              search result reads the whole page without learning what it is called. */}
-          <p className="font-display text-[19px] font-medium tracking-[-0.01em] text-ink sm:text-[22px]">
-            {item.title}
+      <main id="main">
+        {/* Title block */}
+        <header className="shell pb-10 pt-12 sm:pb-14 sm:pt-16">
+          <p className="label">
+            Case {item.index} of {String(work.length).padStart(2, '0')} · {item.kicker} · {item.status}
           </p>
-
-          <h1 className="h-display -mt-2 max-w-[900px] text-[32px] leading-[1.1] sm:text-[44px] lg:text-[58px] lg:leading-[1.08]">
+          <p className="display mt-6 text-lg text-ink-3 sm:text-xl">{item.title}</p>
+          <h1 className="display mt-2 max-w-[22ch] text-2xl sm:text-3xl lg:text-4xl">
             {item.problem.heading}
           </h1>
+          <p className="prose-body mt-7 text-lg">{item.lede}</p>
 
-          <p className="prose-body max-w-[780px] sm:text-[18px]">{item.lede}</p>
-
-          <dl className="mt-4 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
+          <dl className="mt-10 border-t border-rule">
             {item.meta.map((m) => (
-              <div key={m.label} className="flex flex-col gap-1.5 bg-panel px-6 py-5">
-                <dt className="sec-label">{m.label}</dt>
-                <dd className="text-[14.5px] text-ink">
-                  {m.href ? (
-                    <a
-                      href={m.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="focusable inline-flex items-center gap-1.5 text-accent transition-opacity hover:opacity-80"
-                    >
-                      {m.value}
-                      <ArrowUpRight />
-                    </a>
-                  ) : (
-                    m.value
-                  )}
+              <div key={m.label} className="grid grid-cols-[7rem_1fr] gap-x-6 border-b border-rule py-3 sm:grid-cols-[11rem_1fr]">
+                <dt className="label">{m.label}</dt>
+                <dd className="font-serif text-sm text-ink">
+                  {m.href
+                    ? <a className="focusable border-b border-mark text-mark" href={m.href} target="_blank" rel="noopener noreferrer">{m.value} ↗</a>
+                    : m.value}
                 </dd>
               </div>
             ))}
           </dl>
-        </div>
+        </header>
 
-        {/* Screenshot */}
         {item.shot && (
-          <div className="shell pb-14 pt-5">
-            <figure className="card overflow-hidden">
-              <figcaption className="flex items-center gap-[7px] border-b border-line px-4 py-3">
-                <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-edge" />
-                <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-edge" />
-                <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full bg-edge" />
-                <span className="ml-3 font-mono text-[11.5px] text-dim">{item.shot.chrome}</span>
-              </figcaption>
-              <Image
-                src={item.shot.src}
-                alt={item.shot.alt}
-                width={1400}
-                height={722}
-                priority
-                className="block w-full"
-              />
-            </figure>
-          </div>
+          <figure className="shell pb-6" data-reveal>
+            <Image
+              src={item.shot.src}
+              alt={item.shot.alt}
+              width={item.shot.w}
+              height={item.shot.h}
+              className="w-full max-w-[470px] border border-rule"
+              sizes="(max-width: 640px) 100vw, 470px"
+            />
+            <figcaption className="mt-3 max-w-measure font-mono text-xs text-ink-3">
+              {figNo()} — {item.shot.caption}
+            </figcaption>
+          </figure>
         )}
 
-        {/* Problem */}
-        <Row label="The problem">
-          {item.problem.paras.map((p) => (
-            <p key={p.slice(0, 40)} className="prose-body max-w-[780px]">
-              {p}
-            </p>
-          ))}
-        </Row>
-
-        {/* Agents, SmartZees only */}
-        {item.agents && (
-          <div className="pb-14">
-            <div className="shell grid grid-cols-1 gap-6 pb-8 sm:gap-14 lg:grid-cols-[260px_1fr]">
-              <span className="sec-label lg:pt-2">What it ships</span>
-              <div className="flex max-w-[780px] flex-col gap-4">
-                <H2>{item.agents.heading}</H2>
-                <p className="prose-body">{item.agents.blurb}</p>
-              </div>
-            </div>
-            <ul className="shell grid grid-cols-1 gap-[18px] md:grid-cols-3">
-              {item.agents.items.map((a) => (
-                <li key={a.name} className="card flex flex-col gap-3.5 p-[26px]">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-display text-[19px] font-medium text-ink">{a.name}</h3>
-                    <span aria-hidden="true" className="h-2 w-2 rounded-full bg-accent" />
-                  </div>
-                  <p className="flex-grow text-[14.5px] leading-[1.65] text-muted">{a.blurb}</p>
-                  <ul className="flex flex-wrap gap-[7px]">
-                    {a.chips.map((c) => (
-                      <li key={c} className="chip">
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href={a.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="focusable mt-0.5 flex items-center gap-[7px] font-mono text-[12.5px] text-accent transition-opacity hover:opacity-80"
-                  >
-                    {a.hrefLabel}
-                    <ArrowUpRight />
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <Part n={`${item.index.replace(/^0/, '')}.1`} title="The problem">
+          <Paras items={item.problem.paras} />
+        </Part>
 
         {item.layers && (
-          <div className="pb-14">
-            <div className="shell grid grid-cols-1 gap-6 pb-8 sm:gap-14 lg:grid-cols-[260px_1fr]">
-              <span className="sec-label lg:pt-2">What it is made of</span>
-              <div className="flex max-w-[780px] flex-col gap-4">
-                <H2>{item.layers.heading}</H2>
-                <p className="prose-body">{item.layers.blurb}</p>
-              </div>
-            </div>
-            <ul className="shell grid grid-cols-1 gap-[18px] md:grid-cols-2">
+          <Part n={`${item.index.replace(/^0/, '')}.2`} title={item.layers.heading}>
+            <p className="prose-body mb-8" data-reveal>{item.layers.blurb}</p>
+            <ol className="border-t border-rule">
               {item.layers.items.map((l) => (
-                <li key={l.name} className="card flex flex-col gap-3.5 p-[26px]">
-                  <div className="flex items-center justify-between gap-3">
-                    <h3 className="font-display text-[19px] font-medium text-ink">{l.name}</h3>
-                    <span aria-hidden="true" className="h-2 w-2 shrink-0 rounded-full bg-accent" />
+                <li key={l.name} className="grid grid-cols-1 gap-2 border-b border-rule py-6 sm:grid-cols-[13rem_1fr] sm:gap-10" data-reveal>
+                  <h3 className="display text-base">{l.name}</h3>
+                  <div>
+                    <p className="prose-body text-sm">{l.blurb}</p>
+                    <p className="mt-2 font-mono text-2xs uppercase text-ink-3">{l.chips.join(' · ')}</p>
                   </div>
-                  <p className="flex-grow text-[14.5px] leading-[1.65] text-muted">{l.blurb}</p>
-                  <ul className="flex flex-wrap gap-[7px]">
-                    {l.chips.map((c) => (
-                      <li key={c} className="chip">
-                        {c}
-                      </li>
-                    ))}
-                  </ul>
                 </li>
               ))}
-            </ul>
-          </div>
+            </ol>
+          </Part>
         )}
 
-        {/* Architecture */}
+        {item.agents && (
+          <Part n={`${item.index.replace(/^0/, '')}.2`} title={item.agents.heading}>
+            <p className="prose-body mb-8" data-reveal>{item.agents.blurb}</p>
+            <ol className="border-t border-rule">
+              {item.agents.items.map((a) => (
+                <li key={a.name} className="grid grid-cols-1 gap-2 border-b border-rule py-6 sm:grid-cols-[13rem_1fr] sm:gap-10" data-reveal>
+                  <h3 className="display text-base">{a.name}</h3>
+                  <div>
+                    <p className="prose-body text-sm">{a.blurb}</p>
+                    <a className="focusable mt-2 inline-block font-mono text-2xs text-mark" href={a.href} target="_blank" rel="noopener noreferrer">
+                      {a.hrefLabel} ↗
+                    </a>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Part>
+        )}
+
+        <Part n={`${item.index.replace(/^0/, '')}.3`} title={item.approach.heading}>
+          <Paras items={item.approach.paras} />
+        </Part>
+
         {Diagram && (
-          <Row label="Architecture">
-            <Diagram />
-          </Row>
+          <section className="shell border-t border-rule py-12 sm:py-16">
+            <figure data-reveal>
+              <Diagram />
+              <figcaption className="mt-3 max-w-measure font-mono text-xs text-ink-3">
+                {figNo()} — The architecture described above.
+              </figcaption>
+            </figure>
+          </section>
         )}
 
-        {/* Approach */}
-        <Row label="What I did">
-          <H2>{item.approach.heading}</H2>
-          {item.approach.paras.map((p) => (
-            <p key={p.slice(0, 40)} className="prose-body max-w-[780px]">
-              {p}
-            </p>
-          ))}
-        </Row>
-
-        {/* Results */}
         {item.results && (
-          <Row label="Results">
-            <H2>{item.results.heading}</H2>
-            <div className="overflow-x-auto rounded-xl border border-line">
-              <table className="w-full min-w-[700px] border-collapse text-left">
+          <Part n={`${item.index.replace(/^0/, '')}.4`} title={item.results.heading}>
+            {/* Desktop: a table. Mobile: cards, because the old table was
+                700px wide inside a 342px scroller, which put the change
+                column — the only number anyone cares about — offscreen with
+                no indication it existed. */}
+            <div className="hidden overflow-x-auto sm:block" tabIndex={0}>
+              <table className="w-full min-w-[640px] border-collapse text-left">
                 <thead>
-                  <tr className="border-b border-line bg-panel">
-                    {['Measure', 'Before', 'After', 'Change'].map((h) => (
-                      <th key={h} scope="col" className="sec-label px-5 py-3.5 font-normal">
-                        {h}
-                      </th>
-                    ))}
+                  <tr className="border-y border-rule bg-sunk">
+                    <th className="label py-3 pr-6 font-normal">Measure</th>
+                    <th className="label py-3 pr-6 font-normal">Before</th>
+                    <th className="label py-3 pr-6 font-normal">After</th>
+                    <th className="label py-3 font-normal">Change</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {item.results.rows.map((r, i) => (
-                    <tr
-                      key={r.measure}
-                      className={`bg-raised ${i === item.results!.rows.length - 1 ? '' : 'border-b border-line'}`}
-                    >
-                      <th scope="row" className="px-5 py-4 text-[14.5px] font-normal text-ink">
-                        {r.measure}
-                      </th>
-                      <td className="whitespace-nowrap px-5 py-4 font-mono text-[13.5px] text-muted">
-                        {r.before}
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-4 font-mono text-[13.5px] text-ink">
-                        {r.after}
-                      </td>
-                      <td className="whitespace-nowrap px-5 py-4 font-mono text-[13.5px] text-accent">
-                        {r.change}
-                      </td>
+                  {item.results.rows.map((r) => (
+                    <tr key={r.measure} className="border-b border-rule">
+                      <td className="py-4 pr-6 font-serif text-sm text-ink">{r.measure}</td>
+                      <td className="py-4 pr-6 font-mono text-xs text-ink-3">{r.before}</td>
+                      <td className="py-4 pr-6 font-mono text-xs text-ink">{r.after}</td>
+                      <td className="py-4 font-serif text-base text-mark">{r.change}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
+
+            <ol className="border-t border-rule sm:hidden">
+              {item.results.rows.map((r) => (
+                <li key={r.measure} className="border-b border-rule py-5">
+                  <p className="font-serif text-sm text-ink">{r.measure}</p>
+                  <p className="mt-1.5 font-mono text-xs text-ink-3">
+                    {r.before} <span className="text-ink-3">→</span> <span className="text-ink">{r.after}</span>
+                  </p>
+                  <p className="tnum mt-2 font-serif text-xl text-mark">{r.change}</p>
+                </li>
+              ))}
+            </ol>
+
             {item.results.footnote && (
-              <p className="max-w-[780px] text-[14.5px] leading-[1.7] text-dim">
-                {item.results.footnote}
-              </p>
+              <p className="prose-body mt-7 text-sm">{item.results.footnote}</p>
             )}
-          </Row>
+          </Part>
         )}
 
-        {/* Links out */}
         {item.live && (
-          <Row label="See it">
-            <div className="flex flex-wrap gap-3">
-              {item.live && (
-                <a
-                  href={item.live.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="focusable flex items-center gap-2.5 rounded-lg bg-accent px-5 py-3 text-[14.5px] font-semibold text-ground transition-opacity hover:opacity-90"
-                >
-                  {item.live.label}
-                  <ArrowUpRight />
-                </a>
-              )}
-            </div>
-          </Row>
+          <section className="shell border-t border-rule py-10">
+            <a
+              href={item.live.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="focusable border-b border-mark font-mono text-sm text-mark transition-colors duration-quick hover:bg-mark-wash"
+            >
+              See it running at {item.live.label} ↗
+            </a>
+          </section>
         )}
 
-        {/* Prev / next */}
-        <div className="shell flex flex-col gap-4 border-t border-line-soft py-8 sm:flex-row sm:items-center sm:justify-between">
-          <Link
-            href="/#work"
-            className="focusable flex items-center gap-2.5 text-[15px] text-muted transition-colors hover:text-ink"
-          >
-            <ArrowLeft />
-            All work
+        {/* The old page ended here, with "back" and "next" and no ask. A reader
+            who has just finished 1,200 words on your GPU platform is at peak
+            intent; handing them two navigation links was the largest leak on
+            the site. */}
+        <Colophon />
+
+        <nav className="shell flex items-center justify-between gap-6 border-t border-rule py-8" aria-label="Case studies">
+          <Link href={`/work/${prev.slug}/`} className="focusable group min-w-0">
+            <span className="label block">← {prev.index}</span>
+            <span className="display block truncate text-sm group-hover:text-mark">{prev.title}</span>
           </Link>
-          <Link
-            href={`/work/${next.slug}`}
-            className="focusable group flex items-center gap-2.5 text-[15px] text-ink"
-          >
-            <span className="text-dim">Next:</span> {next.title}
-            <ArrowRight className="h-[15px] w-[15px] transition-transform group-hover:translate-x-1" />
+          <span className="label tnum shrink-0">{item.index} / {String(work.length).padStart(2, '0')}</span>
+          <Link href={`/work/${next.slug}/`} className="focusable group min-w-0 text-right">
+            <span className="label block">{next.index} →</span>
+            <span className="display block truncate text-sm group-hover:text-mark">{next.title}</span>
           </Link>
-        </div>
+        </nav>
       </main>
+
       <Footer />
+      <MobileBar caseMode />
     </>
   );
 }

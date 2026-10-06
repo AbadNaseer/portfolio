@@ -1,48 +1,44 @@
-# abadnaseer.com — portfolio
+# abad.falcoflow.com
 
-Personal site for Abad Naseer, Platform Engineer (Cloud, Kubernetes & AI Systems).
+A technical memorandum rather than a landing page: a document head with an
+abstract of measured results, a contents page of six case studies, an appendix
+of faults, positions held, and a colophon. Static Next.js export on Vercel.
 
-A landing page plus five case studies with measured results, built as a static
-export so it can be handed to anyone as a single link.
+## Why it looks like this
 
-## Stack
+The content was always document-shaped — a fault table, a results table per
+project, a header block per project — and the previous design wrapped it in
+marketing chrome and lost both. Paper ground, one serif at 400, one mono for
+every number, one oxide red used only where it carries meaning.
 
-Next.js 14 (App Router, `output: 'export'`) · TypeScript · Tailwind · no runtime JS
-beyond React hydration. Deploys to Vercel as static files.
+## Layout
 
-## Running it
-
-```bash
-npm install
-npm run dev     # http://localhost:3000
-npm run build   # static export into ./out
-```
-
-## Where the content lives
-
-All copy is data, not markup. To change what the site says, edit `content/`:
-
-| File | What it holds |
+| Path | What it holds |
 |---|---|
-| `content/profile.ts` | Name, headline, intro, the four hero metrics, all outbound links |
-| `content/work.ts` | The five case studies: summary, metric, problem, approach, results table |
-| `content/repos.ts` | The open-source grid |
-| `content/experience.ts` | Roles, credentials, skill groups |
+| `app/tokens.css` | The only place a colour or duration is defined |
+| `tailwind.config.ts` | Ten type sizes. `text-[...]` is banned |
+| `content/profile.ts` | Headline, abstract metrics, contact, links |
+| `content/work.ts` | Six case studies, `tier`-ranked, with their results tables |
+| `content/findings.ts` | Seven real faults, symptom and cause |
+| `content/experience.ts` | Four roles and credentials |
+| `components/doc.tsx` | Document primitives: head, contents, faults, positions, colophon |
+| `components/diagrams.tsx` | Five hand-drawn SVG architecture figures |
+| `components/inference-sim.tsx` | The running inference model on case 01 |
 
-`components/` renders that data and should rarely need touching.
-`components/diagrams.tsx` holds one inline SVG architecture diagram per case study.
+## House rules
 
-## House rules for the copy
+- Every colour is a CSS custom property in `tokens.css`. A hex literal in a
+  component is a bug.
+- Every type size comes from the scale. No arbitrary values.
+- Contrast is checked, not assumed: `ink` 17.2:1, `ink-2` 6.9:1, `ink-3` 4.5:1,
+  `mark` 6.4:1, interactive borders 3.0:1, all against `paper`.
+- Motion lives behind `prefers-reduced-motion` and its resting opacity is
+  `.001`, never `0`, so nothing is ever hidden from find-in-page or a reader.
+- No number appears without the conditions it was measured under.
 
-- Every number is one that was actually measured, quoted with the conditions it was
-  measured under. "787x faster" alone invites a reader to discount it; "787x, on a
-  25,631 product catalog" does not.
-- No em or en dashes.
-- Freelance client names are never used. Their products (SmartZees and its three
-  agents) are public brands and are linked directly.
+## Build
 
-## Assets
-
-`public/img/portrait.webp` is the hero portrait, cropped to a torso shot with the
-bottom faded to transparent so it dissolves into the dark ground.
-`public/img/work/` holds live screenshots. `public/Abad_Naseer_Resume.pdf` is the CV.
+```
+export PATH="$HOME/.local/node/bin:$PATH"
+npm run build      # static export into out/
+```

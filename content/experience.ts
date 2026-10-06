@@ -8,7 +8,7 @@ export type Role = {
 
 export const roles: Role[] = [
   {
-    period: 'Jun 2026 — now',
+    period: 'Jun 2026 – now',
     title: 'Platform Engineer, AI Infrastructure',
     org: 'Ccript Agency',
     blurb:
@@ -16,21 +16,21 @@ export const roles: Role[] = [
     current: true,
   },
   {
-    period: 'Oct 2025 — Apr 2026',
+    period: 'Oct 2025 – Apr 2026',
     title: 'DevOps Engineer',
     org: 'Mediatiz Foundation',
     blurb:
       'Owned the AWS estate for an LMS and mobile app at 1M+ users. Cut spend 30%, built the CI/CD for four codebases, and shipped a self hosted LLM tutor to keep student data in house.',
   },
   {
-    period: 'Dec 2023 — Oct 2025',
+    period: 'Dec 2023 – Oct 2025',
     title: 'DevOps Engineer',
     org: 'Poshmaal Technologies',
     blurb:
       'Led the AWS to on premises migration of an IoT SaaS platform, then rebuilt its dev, staging and production environments with full stack observability and a K3s GitOps cluster for ERP workloads.',
   },
   {
-    period: 'Dec 2021 — Nov 2023',
+    period: 'Dec 2021 – Nov 2023',
     title: 'DevOps Consultant, freelance',
     org: 'Fiverr & Upwork',
     blurb:
@@ -41,24 +41,4 @@ export const roles: Role[] = [
 export const credentials = [
   'BS Software Engineering, FAST-NUCES Islamabad, 2020 to 2025',
   'AWS Solutions Architect and CKA in progress',
-  'RocketDevs vetted talent',
-];
-
-export const skills = [
-  {
-    group: 'Cloud & infrastructure',
-    items: ['AWS (ECS, RDS, ALB, Lambda, CloudFront, WAF)', 'GCP (GKE, BigQuery, Pub/Sub, Cloud Run)', 'Azure AKS', 'Linux, nginx, bare metal'],
-  },
-  {
-    group: 'Platform & delivery',
-    items: ['Kubernetes, K3s, EKS', 'ArgoCD, Helm, GitOps', 'Terraform, Ansible', 'GitHub Actions, Jenkins, blue/green'],
-  },
-  {
-    group: 'Observability & security',
-    items: ['Prometheus, Grafana, Loki', 'OpenTelemetry, Jaeger, eBPF', 'Datadog, CloudWatch', 'WAF, TLS, hardening, OWASP testing'],
-  },
-  {
-    group: 'AI systems & backend',
-    items: ['RAG, FAISS, pgvector, MiniLM', 'vLLM GPU serving, Gemini, Ollama', 'Python, FastAPI, Django, Spring Boot', 'PostgreSQL, MySQL, Redis, Kafka'],
-  },
 ];

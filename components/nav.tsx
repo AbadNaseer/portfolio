@@ -1,63 +1,89 @@
 import Link from 'next/link';
 import { profile } from '@/content/profile';
-import { ArrowLeft, Download } from './icons';
 
-const sections = [
+/*  A running head, the way a document has one.
+ *
+ *  Three things changed from the old nav and each was a measured defect.
+ *  It is sticky, because the previous header scrolled away after 80px while
+ *  four anchors reserved 80px of scroll offset for it. Contact is the one
+ *  emphasised control, because the brightest element used to be a link that
+ *  took the reader off the site to a PDF. And there is a navigation on
+ *  phones at all: the old links were inside `hidden md:flex`, so below 768px
+ *  the only control on a 9,000px page was that same PDF.
+ */
+
+const SECTIONS = [
   { label: 'Work', href: '/#work' },
-  { label: 'Debugging', href: '/#debugging' },
-  { label: 'Experience', href: '/#experience' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Faults', href: '/#faults' },
+  { label: 'Positions', href: '/#positions' },
 ];
 
-export function Nav({ variant = 'home' }: { variant?: 'home' | 'case' }) {
+export function Masthead({ caseLabel }: { caseLabel?: string }) {
   return (
-    <header className="border-b border-line-soft">
-      <nav className="shell flex items-center justify-between py-5 sm:py-6">
-        {variant === 'home' ? (
-          <Link href="/" className="focusable flex items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="flex h-[34px] w-[34px] items-center justify-center rounded-[7px] border border-accent font-display text-[14px] font-bold text-accent"
-            >
-              AN
-            </span>
-            <span className="font-display text-[15.5px] font-semibold tracking-[-0.01em] text-ink">
-              {profile.name}
-            </span>
-          </Link>
-        ) : (
-          <Link
-            href="/#work"
-            className="focusable flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
-          >
-            <ArrowLeft />
-            All work
-          </Link>
-        )}
+    <header className="sticky top-0 z-40 border-b border-rule bg-paper/90 backdrop-blur-sm">
+      <nav className="shell flex h-14 items-center justify-between gap-4" aria-label="Primary">
+        <Link href="/" className="focusable group flex min-w-0 items-baseline gap-2.5">
+          <span className="font-mono text-2xs uppercase text-ink-3 group-hover:text-ink">
+            {profile.name}
+          </span>
+          <span className="hidden truncate font-mono text-2xs uppercase text-ink-3 sm:inline">
+            {caseLabel ?? profile.role}
+          </span>
+        </Link>
 
-        <div className="flex items-center gap-6 sm:gap-8">
-          {variant === 'home' && (
-            <div className="hidden items-center gap-8 md:flex">
-              {sections.map((s) => (
-                <Link
-                  key={s.href}
-                  href={s.href}
-                  className="focusable text-[14.5px] text-muted transition-colors hover:text-accent"
-                >
-                  {s.label}
-                </Link>
-              ))}
-            </div>
-          )}
+        <div className="flex items-center gap-6">
+          <div className="hidden items-center gap-6 md:flex">
+            {(caseLabel ? [{ label: 'All work', href: '/#work' }] : SECTIONS).map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="focusable font-mono text-2xs uppercase text-ink-3 transition-colors duration-quick hover:text-ink"
+              >
+                {s.label}
+              </Link>
+            ))}
+            <a
+              href={profile.links.resume}
+              className="focusable font-mono text-2xs uppercase text-ink-3 transition-colors duration-quick hover:text-ink"
+            >
+              CV
+            </a>
+          </div>
+
           <a
-            href={profile.links.resume}
-            className="focusable flex items-center gap-2 rounded-full bg-accent px-[18px] py-[9px] text-sm font-medium text-ground transition-opacity hover:opacity-90"
+            href="#contact"
+            className="focusable border-b border-mark pb-0.5 font-mono text-2xs uppercase text-mark transition-colors duration-quick hover:bg-mark-wash"
           >
-            <Download className="h-[13px] w-[13px] sm:hidden" />
-            Résumé
+            Contact
           </a>
         </div>
       </nav>
     </header>
+  );
+}
+
+/*  Phones get a persistent bar rather than a hamburger. A hamburger hides
+ *  "where am I", "what else is there" and "how do I reach him" behind a tap
+ *  and answers none of them; three labelled targets answer all three. */
+export function MobileBar({ caseMode }: { caseMode?: boolean }) {
+  const items = caseMode
+    ? [{ label: 'All work', href: '/#work' }, { label: 'Faults', href: '/#faults' }, { label: 'Contact', href: '#contact' }]
+    : [...SECTIONS.slice(0, 2), { label: 'Contact', href: '#contact' }];
+
+  return (
+    <nav
+      aria-label="Sections"
+      className="fixed inset-x-0 bottom-0 z-40 grid grid-cols-3 border-t border-rule bg-paper/95 backdrop-blur-sm md:hidden"
+    >
+      {items.map((i) => (
+        <a
+          key={i.href}
+          href={i.href}
+          className="focusable flex h-14 items-center justify-center font-mono text-2xs uppercase text-ink-2 active:bg-sunk"
+        >
+          {i.label}
+        </a>
+      ))}
+    </nav>
   );
 }

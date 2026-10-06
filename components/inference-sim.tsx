@@ -12,16 +12,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  */
 
 const C = {
-  box: '#151719',
-  edge: '#2A2D34',
-  ink: '#F2F1EC',
-  dim: '#6B6E76',
-  faint: '#4E5158',
-  accent: '#C7F04B',
-  accentBox: '#12160D',
-  accentEdge: '#3D4A22',
-  accentDim: '#8A9463',
-  warn: '#E8A33D',
+  box: 'var(--paper-sunk)',
+  edge: 'var(--rule)',
+  ink: 'var(--ink)',
+  dim: 'var(--ink-2)',
+  faint: 'var(--ink-3)',
+  accent: 'var(--mark)',
+  accentBox: 'var(--mark-wash)',
+  accentEdge: 'var(--mark)',
+  accentDim: 'var(--ink-2)',
+  warn: 'var(--mark)',
 };
 
 const TICK = 100; // ms
@@ -203,29 +203,29 @@ export function InferenceSim() {
   const hot = snap.queue > 12;
 
   return (
-    <figure className="card bg-panel p-5 sm:p-7">
+    <figure className="border border-rule bg-sunk p-5 sm:p-7">
       <figcaption className="mb-5 flex flex-wrap items-center justify-between gap-3">
-        <span className="sec-label">Request to response, running</span>
+        <span className="label">Request to response, running</span>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => setRunning((r) => !r)}
             aria-pressed={running}
-            className="focusable rounded-md border border-edge px-3 py-1.5 text-[13px] text-ink transition-colors hover:border-muted"
+            className="focusable rounded-md border border-rule-strong px-3 py-1.5 text-xs text-ink transition-colors hover:border-ink-3"
           >
             {running ? 'Pause' : 'Play'}
           </button>
           <button
             type="button"
             onClick={reset}
-            className="focusable rounded-md border border-[#24262C] px-3 py-1.5 text-[13px] text-muted transition-colors hover:border-edge hover:text-ink"
+            className="focusable rounded-md border border-rule-strong px-3 py-1.5 text-xs text-ink-2 transition-colors hover:border-ink-3 hover:text-ink"
           >
             Reset
           </button>
         </div>
       </figcaption>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto" tabIndex={0} role="group" aria-label="Inference simulation, scrollable">
         <svg viewBox="0 0 900 260" className="block h-auto w-full min-w-[660px]" role="img"
           fontFamily="var(--font-mono), ui-monospace, monospace">
           <title>A request arriving, queueing, being served by a pool of vLLM replicas, and returning</title>
@@ -262,7 +262,7 @@ export function InferenceSim() {
           <rect x="330" y="110" width="110" height="80" rx="9" fill={C.box} stroke={hot ? C.warn : C.edge} />
           <rect x="330" y={190 - Math.min(78, snap.queue * 2.6)} width="110"
             height={Math.min(78, snap.queue * 2.6)} rx="8"
-            fill={hot ? 'rgba(232,163,61,0.16)' : 'rgba(199,240,75,0.10)'} />
+            fill={hot ? 'var(--mark-wash)' : 'var(--mark-wash)'} />
           <text x="385" y="142" fill={C.ink} fontSize="13" textAnchor="middle">Queue</text>
           <text x="385" y="166" fill={hot ? C.warn : C.accent} fontSize="15" textAnchor="middle">
             {snap.queue.toFixed(0)}
@@ -315,7 +315,7 @@ export function InferenceSim() {
       </div>
 
       {/* live counters */}
-      <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-line bg-line sm:grid-cols-5">
+      <dl className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-rule bg-rule sm:grid-cols-5">
         {[
           { k: 'Served', v: `${snap.rate.toFixed(1)}/s` },
           { k: 'Queue', v: snap.queue.toFixed(0) },
@@ -323,16 +323,16 @@ export function InferenceSim() {
           { k: 'Latency', v: `${Math.round(snap.latency)} ms` },
           { k: 'GPU busy', v: `${Math.round(snap.util * 100)}%` },
         ].map((m) => (
-          <div key={m.k} className="flex flex-col gap-1 bg-panel px-4 py-3">
-            <dt className="sec-label">{m.k}</dt>
-            <dd className="font-display text-[19px] font-semibold tracking-[-0.02em] text-ink">{m.v}</dd>
+          <div key={m.k} className="flex flex-col gap-1 bg-sunk px-4 py-3">
+            <dt className="label">{m.k}</dt>
+            <dd className="font-serif text-lg font-semibold tracking-[-0.02em] text-ink">{m.v}</dd>
           </div>
         ))}
       </dl>
 
       {/* queue depth, last 12 seconds */}
       <div className="mt-4 flex items-center gap-3">
-        <span className="sec-label shrink-0">Queue, 12s</span>
+        <span className="label shrink-0">Queue, 12s</span>
         <svg viewBox="0 0 240 28" preserveAspectRatio="none" className="h-7 w-full" aria-hidden="true">
           <polyline
             points={snap.history
@@ -346,7 +346,7 @@ export function InferenceSim() {
       </div>
 
       {/* controls */}
-      <div className="mt-5 grid grid-cols-1 gap-5 border-t border-line pt-5 sm:grid-cols-2">
+      <div className="mt-5 grid grid-cols-1 gap-5 border-t border-rule pt-5 sm:grid-cols-2">
         <div className="flex flex-col gap-3.5">
           <Slider label="Traffic" value={traffic} min={1} max={40} unit=" req/s" onChange={setTraffic} />
           <Slider label="Replica ceiling" value={ceiling} min={1} max={MAX_REPLICAS} unit="" onChange={setCeiling} />
@@ -359,26 +359,26 @@ export function InferenceSim() {
           <Toggle label="Weights on shared volume" on={sharedWeights} set={setSharedWeights} />
           <div className="mt-1 flex flex-wrap gap-2">
             <button type="button" onClick={spike}
-              className="focusable rounded-md border border-[#24262C] px-3 py-1.5 text-[12.5px] text-muted transition-colors hover:border-edge hover:text-ink">
+              className="focusable rounded-md border border-rule-strong px-3 py-1.5 text-xs text-ink-2 transition-colors hover:border-ink-3 hover:text-ink">
               Traffic spike
             </button>
             <button type="button" onClick={kill}
-              className="focusable rounded-md border border-[#24262C] px-3 py-1.5 text-[12.5px] text-muted transition-colors hover:border-edge hover:text-ink">
+              className="focusable rounded-md border border-rule-strong px-3 py-1.5 text-xs text-ink-2 transition-colors hover:border-ink-3 hover:text-ink">
               Kill a replica
             </button>
           </div>
         </div>
       </div>
 
-      <ul className="mt-5 flex flex-col gap-1 border-t border-line pt-4" aria-live="polite">
+      <ul className="mt-5 flex flex-col gap-1 border-t border-rule pt-4" aria-live="polite">
         {snap.log.map((l, i) => (
-          <li key={`${l}-${i}`} className="font-mono text-[12px]" style={{ color: i === 0 ? C.dim : C.faint }}>
+          <li key={`${l}-${i}`} className="font-mono text-2xs" style={{ color: i === 0 ? C.dim : C.faint }}>
             {l}
           </li>
         ))}
       </ul>
 
-      <p className="mt-4 text-[12.5px] leading-[1.6] text-faint">
+      <p className="mt-4 text-xs leading-[1.6] text-ink-3">
         A model of the system, not a capture from the cluster. Turn batching off, or weights off the
         shared volume, and watch where the time actually goes.
       </p>
@@ -391,13 +391,13 @@ function Slider({
 }: { label: string; value: number; min: number; max: number; step?: number; unit: string; onChange: (n: number) => void }) {
   return (
     <label className="flex flex-col gap-1.5">
-      <span className="flex items-center justify-between text-[13px] text-muted">
+      <span className="flex items-center justify-between text-xs text-ink-2">
         {label}
-        <span className="font-mono text-[12.5px] text-ink">{value}{unit}</span>
+        <span className="font-mono text-xs text-ink">{value}{unit}</span>
       </span>
       <input type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="focusable h-1 w-full cursor-pointer appearance-none rounded bg-[#24262C] accent-accent" />
+        className="focusable h-1 w-full cursor-pointer appearance-none rounded bg-rule accent-mark" />
     </label>
   );
 }
@@ -405,11 +405,11 @@ function Slider({
 function Toggle({ label, on, set }: { label: string; on: boolean; set: (b: boolean) => void }) {
   return (
     <button type="button" onClick={() => set(!on)} aria-pressed={on}
-      className="focusable flex items-center gap-2.5 text-left text-[13px] text-muted transition-colors hover:text-ink">
+      className="focusable flex items-center gap-2.5 text-left text-xs text-ink-2 transition-colors hover:text-ink">
       <span className={`flex h-[18px] w-[32px] shrink-0 items-center rounded-full border px-[2px] transition-colors ${
-        on ? 'border-accent/40 bg-accent/20' : 'border-[#24262C] bg-[#16181C]'}`}>
+        on ? 'border-mark bg-mark-wash' : 'border-rule-strong bg-sunk'}`}>
         <span className={`h-[12px] w-[12px] rounded-full transition-transform ${
-          on ? 'translate-x-[14px] bg-accent' : 'translate-x-0 bg-[#4E5158]'}`} />
+          on ? 'translate-x-[14px] bg-mark' : 'translate-x-0 bg-ink-3'}`} />
       </span>
       {label}
     </button>
